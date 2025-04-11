@@ -1,0 +1,22 @@
+  <!-- Product 1 -->
+            <div class="product-item" data-base-price="3500">
+                <img src="https://i.ibb.co/2F2nWWD/robot1.png" alt="AI Robot Model X">
+                <h2>AI Robot Model X</h2>
+                <p class="price">€3,500</p>
+                <div class="button-group">
+                    <button class="buy-btn">Add to Cart</button>
+                    <a href="product.html?id=1" class="see-more">See More</a>
+                </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-item" data-base-price="2800">
+                <img src="https://i.ibb.co/f20QzGn/robot2.png" alt="CyberBot V2">
+                <h2>CyberBot V2</h2>
+                <p class="price">€2,800</p>
+                <div class="button-group">
+                    <button class="buy-btn">Add to Cart</button>
+                    <a href="product.html?id=2" class="see-more">See More</a>
+                </div>
+            </div>
+        </div>
