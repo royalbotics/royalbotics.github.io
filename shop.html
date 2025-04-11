@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shop Ro&Bot products – cutting-edge robotics and AI technology.">
+    <meta name="keywords" content="robotics, AI, technology, shop, robotics products">
+    <meta name="author" content="Ro&Bot Royal Botics">
+    <title>Shop | Ro&Bot Royal Botics</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+
+        nav {
+            background: rgba(161, 0, 242, 0.2);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #a100f2;
+        }
+
+        .shop-container {
+            padding: 40px;
+        }
+
+        .shop-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #a100f2;
+        }
+
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .product-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 250px;
+            transition: transform 0.3s;
+        }
+
+        .product-item:hover {
+            transform: scale(1.05);
+        }
+
+        .product-item img {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .product-item h2 {
+            font-size: 1.5rem;
+            color: #fff;
+        }
+
+        .product-item p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .buy-btn, .see-more {
+            background: #a100f2;
+            color: #000;
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .buy-btn:hover, .see-more:hover {
+            background: #7200b8;
+        }
+
+        /* Currency & Language Settings (Moved to Bottom) */
+        .currency-settings {
+            margin-top: 50px;
+            padding: 20px;
+            background: rgba(161, 0, 242, 0.1);
+            border-top: 2px solid #a100f2;
+        }
+
+        .currency-selector, #google_translate_element {
+            padding: 10px;
+            color: #fff;
+        }
+
+        /* Cookie Notice */
+        .cookie-notice {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(161, 0, 242, 0.9);
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9rem;
+            z-index: 1000;
+        }
+
+        .cookie-notice button {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: 0.3s;
+        }
+
+        .cookie-notice button:hover {
+            background: #444;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+
+    <div class="shop-container">
+        <h1 class="shop-title">Shop Our Robotics Products</h1>
+
+        <div class="products">
+        <h1>Sorry no products avilable yet please try again in a day or so.<h1>
+    </div>
+
+    <!-- Currency & Language Settings at Bottom -->
+    <div class="currency-settings">
+        <h2>Customize Your Shopping Experience</h2>
+        <div class="currency-selector">
+            <label for="currency">Choose Currency:</label>
+            <select id="currency" onchange="updatePrices()">
+                <option value="EUR">Euro (€)</option>
+                <option value="USD">US Dollar ($)</option>
+                <option value="DOGE">Dogecoin (Ð)</option>
+            </select>
+        </div>
+
+        <!-- Google Translate -->
+        <div id="google_translate_element"></div>
+    </div>
+
+    <!-- Cookie Notice -->
+    <div class="cookie-notice" id="cookieNotice">
+        <span>This website does not use cookies. We respect your privacy and do not track your data.</span>
+        <button onclick="hideCookieNotice()">Got it</button>
+    </div>
+
+<footer style="background: #222; color: #fff; padding: 20px 0; text-align: center;">
+    <p>&copy; 2025 Ro&Bot Royal Botics. All Rights Reserved.</p>
+</footer>
+
+    <script>
+        const exchangeRates = {
+            USD: 1.12,
+            DOGE: 5.83
+        };
+
+        function updatePrices() {
+            const currency = document.getElementById("currency").value;
+            const products = document.querySelectorAll(".product-item");
+
+            products.forEach(product => {
+                const basePrice = parseFloat(product.getAttribute("data-base-price"));
+                const convertedPrice = (currency === "EUR") ? basePrice : (basePrice * exchangeRates[currency]).toFixed(2);
+                product.querySelector(".price").innerText = `${convertedPrice} ${currency}`;
+            });
+        }
+
+        function hideCookieNotice() {
+            document.getElementById("cookieNotice").style.display = "none";
+            localStorage.setItem("cookieNoticeDismissed", "true");
+        }
+
+        window.onload = function () {
+            if (localStorage.getItem("cookieNoticeDismissed") === "true") {
+                document.getElementById("cookieNotice").style.display = "none";
+            }
+            updatePrices();
+        };
+    </script>
+
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
