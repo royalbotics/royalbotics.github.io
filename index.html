@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ro&Bot Royal Botics - Innovating the Future of Robotics with Advanced AI and Next-Gen Technology. Powered by the I1 Chip.">
+    <meta name="keywords" content="robotics, AI, automation, I1 Chip, technology, future, cyberpunk, home robotics">
+    <meta name="author" content="Ro&Bot Royal Botics">
+    <title>Ro&Bot Royal Botics</title>
+
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@600&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #000000, #3b0056);
+            color: #e5e5e5;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            text-align: center;
+        }
+
+        .menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .menu div {
+            width: 45px;
+            height: 5px;
+            background: #e5e5e5;
+            transition: 0.3s;
+            border-radius: 3px;
+        }
+
+        .menu.open div:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .menu.open div:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu.open div:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 260px;
+            height: 100vh;
+            background: rgba(161, 0, 242, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 4px 0px 30px rgba(161, 0, 242, 0.5);
+            transition: left 0.4s ease-in-out;
+            padding-top: 100px;
+            z-index: 199;
+            overflow: hidden;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #e5e5e5;
+            text-decoration: none;
+            padding: 18px 20px;
+            font-size: 1.4rem;
+            text-align: left;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover {
+            background: rgba(161, 0, 242, 0.3);
+            transform: translateX(10px);
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .container {
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1.2s forwards;
+        }
+
+        .logo img {
+            width: 180px;
+            height: auto;
+            margin-bottom: 30px;
+            filter: drop-shadow(0px 0px 15px #a100f2);
+            mix-blend-mode: screen;
+            border-radius: 15px;
+            transition: transform 0.4s ease-in-out;
+        }
+
+        .logo img:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            color: #b0b0b0;
+        }
+
+        .cta {
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            background: #a100f2;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .cta:hover {
+            background: #7200b8;
+            transform: scale(1.05);
+        }
+
+        .cta:focus {
+            outline: none;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Brief Section with Icons */
+        .brief-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 900px;
+            margin: 60px auto 100px;
+            padding: 0 20px;
+        }
+
+        .brief-item {
+            background: rgba(161, 0, 242, 0.1);
+            backdrop-filter: blur(5px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(161, 0, 242, 0.3);
+            transition: 0.3s;
+        }
+
+        .brief-item:hover {
+            box-shadow: 0 6px 20px rgba(161, 0, 242, 0.5);
+        }
+
+        .brief-item i {
+            font-size: 2.5rem;
+            color: #a100f2;
+            margin-bottom: 15px;
+        }
+
+        .brief-item h3 {
+            font-size: 1.7rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .brief-item p {
+            color: #d0d0d0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="menu" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <div class="sidebar" id="sidebar">
+        <a href="#section1">Advanced AI</a>
+        <a href="#section2">Next-Gen Robotics</a>
+        <a href="#section3">Transforming Industries</a>
+        <a href="#i1chip">I1 Chip</a>
+    </div>
+
+    <div class="container">
+        <div class="logo">
+            <img src="https://i.ibb.co/GKQHQ3h/craiyon-174928-transparent.png" alt="Ro&Bot Royal Botics Logo">
+        </div>
+        <div class="header">Ro&Bot Royal Botics</div>
+        <div class="subtitle">Innovating the Future of Robotics</div>
+        <button class="cta" onclick="scrollToContent()">Discover More</button>
+    </div>
+
+    <!-- Brief Section with Icons -->
+    <section class="brief-grid">
+        <div class="brief-item">
+            <i data-lucide="home" class="icon"></i>
+            <h3>Smarter Living</h3>
+            <p>
+                We design robotics that adapt to your lifestyle — intelligently automating your home with precision, personality, and ease.
+            </p>
+        </div>
+
+        <div class="brief-item">
+            <i data-lucide="bot" class="icon"></i>
+            <h3>Human-Like Robotics</h3>
+            <p>
+                Our AI companions don’t just follow commands — they learn, evolve, and respond naturally to human behavior and emotion.
+            </p>
+        </div>
+
+        <div class="brief-item">
+            <i data-lucide="cpu" class="icon"></i>
+            <h3>Powered by the I1 Chip</h3>
+            <p>
+                The I1 Chip provides real-time learning, advanced AI, and efficient power management, enabling robots to adapt and perform optimally in any environment.
+            </p>
+        </div>
+
+        <div class="brief-item">
+            <i data-lucide="shield" class="icon"></i>
+            <h3>Enhanced Security</h3>
+            <p>
+                With cutting-edge sensors and AI, our robots monitor your home, providing real-time alerts, ensuring a safer living space for your loved ones.
+            </p>
+        </div>
+    </section>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById("sidebar").classList.toggle("open");
+            document.querySelector(".menu").classList.toggle("open");
+        }
+
+        function scrollToContent() {
+            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+        }
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
