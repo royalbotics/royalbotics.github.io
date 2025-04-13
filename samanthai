@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SamanthAI | Ro&Bot</title>
+  <meta name="description" content="Meet SamanthAI - Emotional Intelligence Powered by Royal Botics" />
+  <meta name="author" content="Ro&Bot Royal Botics" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #000000 0%, #3b0056 100%);
+      color: #e5e5e5;
+    }
+
+    nav {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    nav a {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #a100f2;
+    }
+
+    .container {
+      padding: 80px 20px;
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #ccc;
+      max-width: 700px;
+      margin: 0 auto 50px;
+    }
+
+    .highlight {
+      background: rgba(161, 0, 242, 0.1);
+      border: 1px solid #a100f2;
+      padding: 30px;
+      border-radius: 20px;
+      margin-bottom: 40px;
+    }
+
+    .highlight h2 {
+      color: #fff;
+      font-size: 1.6rem;
+      margin-bottom: 15px;
+    }
+
+    .highlight p {
+      color: #d0d0d0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #111;
+      font-size: 0.9rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="samanthai.html">SamanthAI</a>
+    <a href="mission.html">Mission</a>
+    <a href="tof.html">Terms</a>
+  </nav>
+
+  <div class="container">
+    <h1>SamanthAI</h1>
+    <p>
+      The heart of Royal Botics' artificial intelligence – a system that doesn’t just think, it feels. Engineered to understand human emotion, intention, and nuance.
+    </p>
+
+    <div class="highlight">
+      <h2>True Emotional Intelligence</h2>
+      <p>SamanthAI adapts to your tone, your expressions, and your patterns — growing closer with every interaction.</p>
+    </div>
+
+    <div class="highlight">
+      <h2>Real-Time Learning</h2>
+      <p>With the I1 chip and neural-matrix computation, it learns in real-time, even offline, becoming smarter every second.</p>
+    </div>
+
+    <div class="highlight">
+      <h2>Your Personal Companion</h2>
+      <p>SamanthAI isn't a tool. It’s a companion, an assistant, and sometimes… a friend.</p>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Ro&Bot Royal Botics. All Rights Reserved.
+  </footer>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
