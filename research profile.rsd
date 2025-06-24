@@ -1,0 +1,20 @@
+    <a href="research1.html" class="profile">
+        <h2>Machine Learning Approaches for Medical Diagnosis</h2>
+        <p><strong>Authors:</strong> Jane Doe, John Smith</p>
+        <p><strong>Year:</strong> 2023</p>
+        <p>Explores ML techniques applied in medical imaging and diagnostics.</p>
+      </a>
+
+      <a href="research2.html" class="profile">
+        <h2>Sustainable Architecture in Urban Environments</h2>
+        <p><strong>Authors:</strong> Emily Chan</p>
+        <p><strong>Year:</strong> 2022</p>
+        <p>A case study on energy-efficient design in megacities.</p>
+      </a>
+
+      <a href="research3.html" class="profile">
+        <h2>Blockchain and Data Security in IoT Devices</h2>
+        <p><strong>Authors:</strong> Ahmed Patel, Laura Kim</p>
+        <p><strong>Year:</strong> 2024</p>
+        <p>Investigates decentralized security methods for smart devices.</p>
+      </a>
