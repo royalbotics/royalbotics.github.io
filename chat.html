@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SamanthAI Chat</title>
+<link rel="icon" href="/favicon.png" type="image/png" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #000000 0%, #3b0056 100%);
+      color: #e5e5e5;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background: rgba(0,0,0,0.6);
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    header a {
+      color: #a100f2;
+      font-size: 1.5rem;
+      text-decoration: none;
+      font-weight: 700;
+      user-select: none;
+    }
+
+    header h1 {
+      margin: 0;
+      font-weight: 600;
+      font-size: 1.8rem;
+      color: #e5e5e5;
+    }
+
+    #chat-window {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 0 0 20px 20px;
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 12px 20px;
+      border-radius: 20px;
+      line-height: 1.4;
+      word-wrap: break-word;
+      user-select: text;
+    }
+
+    .message.user {
+      align-self: flex-end;
+      background: #a100f2;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+
+    .message.bot {
+      align-self: flex-start;
+      background: #370066;
+      color: #ddd;
+      border-bottom-left-radius: 4px;
+    }
+
+    #input-area {
+      background: rgba(0,0,0,0.6);
+      padding: 15px 20px;
+      display: flex;
+      gap: 12px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    #user-input {
+      flex: 1;
+      padding: 12px 18px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 30px;
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    #send-btn {
+      padding: 12px 22px;
+      background: #a100f2;
+      border: none;
+      border-radius: 30px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+      user-select: none;
+    }
+
+    #send-btn:hover {
+      background: #8600cc;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="samanthai.html" title="Go Back">&#8592;</a>
+    <h1>SamanthAI Chat</h1>
+  </header>
+
+  <div id="chat-window">
+    <!-- Chat messages appear here -->
+  </div>
+
+  <div id="input-area">
+    <input id="user-input" type="text" placeholder="Type your message..." autocomplete="off" />
+    <button id="send-btn">Send</button>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat-window');
+    const input = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    sendBtn.addEventListener('click', sendMessage);
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    function sendMessage() {
+      const text = input.value.trim();
+      if (!text) return;
+
+      // User message
+      const userMsg = document.createElement('div');
+      userMsg.className = 'message user';
+      userMsg.textContent = text;
+      chat.appendChild(userMsg);
+      chat.scrollTop = chat.scrollHeight;
+
+      input.value = '';
+
+      // Bot simulated response + notify message + buttons
+      setTimeout(() => {
+        const botMsg = document.createElement('div');
+        botMsg.className = 'message bot';
+        botMsg.textContent = ` I'm still learning to respond. 😊`;
+        chat.appendChild(botMsg);
+
+        const notifyMsg = document.createElement('div');
+        notifyMsg.className = 'message bot';
+        notifyMsg.textContent = "I can notify you when I'm ready for chatting.";
+        chat.appendChild(notifyMsg);
+
+        // Buttons container
+        const btnContainer = document.createElement('div');
+        btnContainer.style.marginTop = '10px';
+        btnContainer.style.display = 'flex';
+        btnContainer.style.gap = '10px';
+
+        // Notify Me button
+        const notifyBtn = document.createElement('button');
+        notifyBtn.textContent = "Notify Me";
+        notifyBtn.style = `
+          padding: 8px 15px;
+          border-radius: 20px;
+          background: #a100f2;
+          color: white;
+          border: none;
+          cursor: pointer;
+          font-weight: 600;
+          flex: 1;
+        `;
+        notifyBtn.onclick = () => {
+          if (Notification.permission === "granted") {
+            showNotification();
+          } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(permission => {
+              if (permission === "granted") {
+                showNotification();
+              } else {
+                alert("Notification permission denied.");
+              }
+            });
+          } else {
+            alert("Please enable notifications in your browser settings.");
+          }
+          notifyBtn.disabled = true;
+          noThanksBtn.disabled = true;
+        };
+
+        // No Thanks button
+        const noThanksBtn = document.createElement('button');
+        noThanksBtn.textContent = "No Thanks";
+        noThanksBtn.style = `
+          padding: 8px 15px;
+          border-radius: 20px;
+          background: #555;
+          color: white;
+          border: none;
+          cursor: pointer;
+          font-weight: 600;
+          flex: 1;
+        `;
+        noThanksBtn.onclick = () => {
+          notifyBtn.disabled = true;
+          noThanksBtn.disabled = true;
+        };
+
+        btnContainer.appendChild(notifyBtn);
+        btnContainer.appendChild(noThanksBtn);
+        chat.appendChild(btnContainer);
+
+        chat.scrollTop = chat.scrollHeight;
+      }, 800);
+    }
+
+   
+
+    // Optional: Prompt notification permission early on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+        Notification.requestPermission();
+      }
+    });
+  </script>
+
+</body>
+</html>
