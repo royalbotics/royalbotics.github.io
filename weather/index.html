@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Ro&Bot™ Weather</title>
   <meta name="description" content="Comprehensive weather forecast by Ro&Bot Royal Botics" />
-  <meta name="author" content="Royal Botics" />
-    <meta name="keywords" content="Weather forecast, Weather, Ro&Bot™, Ro&Bot, RoBot, ROBOT, robot, Royal Botics, royal botics, ROYAL BOTICS," />
+  <meta name="author" content="Ro&Bot Royal Botics" />
   <script src="https://unpkg.com/lucide@latest"></script>
   <link rel="icon" href="/favicon.png" type="image/png" />
 
@@ -202,7 +201,7 @@ a, button, [role="button"], .clickable {
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
-      opacity: 0.2; /* 70% transparent */
+      opacity: 0.15; /* 70% transparent */
       pointer-events: none; /* clicks go through */
       z-index: 0;
       transition: background-image 0.5s ease-in-out;
@@ -335,7 +334,7 @@ Transparancy comes first so you can see the stats board <a href="https://www.fre
 </script>
 
   <footer>
-    &copy; 2025 Royal Botics. All Rights Reserved. | Ro&Bot™ Weather version 3.0.2
+    &copy; 2025 Royal Botics. All Rights Reserved. | Ro&Bot™ <p>Weather version 3.0.2</p>
    <style>.weather-link {
   display: inline-block;
   font-family: system-ui, sans-serif;
@@ -350,16 +349,96 @@ position: centre;
   color: #005b99;
   border-color: #005b99;}
 </style>
-<p><a href="https://royalbotics.github.io/weather/api" class="weather-link">
+<a href="https://royalbotics.github.io/weather/api" class="weather-link">
   Get Ro&Bot™ free API access — add a simple weather forecast to your website
-</a></p>
- 
- </div>
+</a>
+  <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=4ca1bc202b5d263808adbfc427e3aa2a37ebdbf3'></script>
   </footer>
 
+<style>.forecast-day {
+  position: relative;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border-radius: 24px;
+  border: 1.8px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.15),
+    inset 0 0 10px rgba(255, 255, 255, 0.1);
+  color: #f5f5f7;
+  padding: 20px 30px;
+  margin: 18px 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+  cursor: default;
+  user-select: none;
+  overflow: hidden;
+}
 
+/* Subtle gradient overlay for light refraction */
+.forecast-day::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255,255,255,0) 60%);
+  pointer-events: none;
+  border-radius: inherit;
+  filter: blur(25px);
+  z-index: 0;
+}
+
+/* Highlight "shine" line */
+.forecast-day::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255,255,255,0));
+  border-radius: 100px;
+  filter: blur(4px);
+  transform: rotate(20deg);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ensure content above shine */
+.forecast-day > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Hover effect: stronger glow and light */
+.forecast-day:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 12px 45px rgba(255, 255, 255, 0.25),
+    inset 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Labels and values styling */
+.forecast-day .label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.forecast-day .value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #e8e8ea;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+
+</style>
   <script>
-    const STORAGE_KEY = 'ROBOT_DKJK96GDErjkloM';
+    const STORAGE_KEY = 'robot_saved_locations';
 
     function saveLocation(name, lat, lon) {
       let locations = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
@@ -452,7 +531,8 @@ position: centre;
           <div class="label">UV Index: ${daily.uv_index_max[i]}</div>
           <div class="label">Wind Speed: ${daily.windspeed_10m_max ? daily.windspeed_10m_max[i] + ' km/h' : 'N/A'}</div>
         </div>`;
-    }
+   
+ }
   } catch (err) {
     document.getElementById('search-error').textContent = 'Error fetching weather data.';
     console.error(err);
@@ -644,6 +724,29 @@ const weatherCodeMap = {
   99: "Thunderstorm with heavy hail"
 };
 
+(() => {
+  let targetScroll = 0;
+  let currentScroll = 0;
+  const ease = 0.1;
+
+  // Update targetScroll on wheel scroll
+  window.addEventListener('wheel', (e) => {
+    e.preventDefault(); // prevent default to override instantly
+    targetScroll += e.deltaY;
+    targetScroll = Math.max(0, Math.min(targetScroll, document.body.scrollHeight - window.innerHeight));
+  }, { passive: false });
+
+  function smoothScroll() {
+    currentScroll += (targetScroll - currentScroll) * ease;
+
+    // Scroll the window smoothly
+    window.scrollTo(0, currentScroll);
+
+    requestAnimationFrame(smoothScroll);
+  }
+
+  smoothScroll();
+})();
 
   </script>
 
