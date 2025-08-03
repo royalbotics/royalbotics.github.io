@@ -61,105 +61,63 @@
       padding-bottom: 6px;
     }
 
-    /* Location picker container */
     .location-bar {
-      background: rgba(255 255 255 / 0.1);
-      border-radius: 12px;
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      max-width: 720px;
-      margin: 0 auto 40px auto;
-      box-shadow: 0 0 15px #a100f2aa;
+      text-align: center;
+      margin-bottom: 30px;
       font-weight: 600;
       color: #d183f7;
       font-size: 1.2rem;
-      user-select: none;
-    }
-
-    #location-name {
-      font-weight: 700;
-      font-size: 1.3rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 250px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
     button, input, select {
       font-family: 'Poppins', sans-serif;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: none;
-      padding: 10px 14px;
-      cursor: pointer;
-      transition: background-color 0.25s ease;
-      user-select: none;
     }
 
     button {
-      background-color: #a100f2;
+      background: #a100f2;
+      border: none;
       color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
       font-weight: 600;
-      box-shadow: 0 4px 6px #a100f233;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-radius: 10px;
-      min-width: 120px;
-      justify-content: center;
+      transition: background 0.3s;
     }
 
     button:hover {
-      background-color: #d183f7;
-    }
-
-    button:disabled {
-      background-color: #555;
-      cursor: not-allowed;
+      background: #d183f7;
     }
 
     input[type="text"] {
-      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #a100f2;
+      background: rgba(0,0,0,0.3);
       color: #e5e5e5;
-      border: 1.5px solid #a100f2;
-      min-width: 250px;
-      max-width: 300px;
-      padding-left: 14px;
-      font-weight: 500;
-      outline-offset: 2px;
+      outline: none;
+      min-width: 200px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
     }
 
     input[type="text"]:focus {
       border-color: #d183f7;
-      background: rgba(0,0,0,0.5);
     }
 
     select {
       background: rgba(0,0,0,0.3);
+      border: 1px solid #a100f2;
       color: #e5e5e5;
-      border: 1.5px solid #a100f2;
-      min-width: 220px;
-      max-width: 280px;
-      font-weight: 600;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 1rem;
       cursor: pointer;
-      padding: 10px 12px;
-      appearance: none;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      background-image:
-        linear-gradient(45deg, transparent 50%, #d183f7 50%),
-        linear-gradient(135deg, #d183f7 50%, transparent 50%),
-        linear-gradient(to right, #4c007a, #a100f2);
-      background-position:
-        calc(100% - 20px) calc(1em + 2px),
-        calc(100% - 15px) calc(1em + 2px),
-        calc(100% - 2.5em) 0.75em;
-      background-size: 5px 5px, 5px 5px, 1px 1.5em;
-      background-repeat: no-repeat;
+      min-width: 200px;
     }
 
     .error {
@@ -167,7 +125,6 @@
       text-align: center;
       margin-top: 10px;
       font-weight: 600;
-      width: 100%;
     }
 
     .info-grid {
@@ -229,34 +186,6 @@
       color: #888;
       margin-top: 60px;
     }
-
-    /* Search area style */
-    #search-area {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      max-width: 720px;
-      margin: 0 auto 40px auto;
-    }
-
-    #search-area input {
-      flex-grow: 1;
-      min-width: 220px;
-      max-width: 350px;
-    }
-
-    #search-area button {
-      min-width: 100px;
-    }
-
-    /* Icon styling inside buttons */
-    .icon {
-      width: 18px;
-      height: 18px;
-      stroke-width: 2.2;
-    }
   </style>
 </head>
 <body>
@@ -275,34 +204,18 @@
     <h1>Ro&Bot™ Weather</h1>
 
     <div class="location-bar" id="location-bar">
-      <span id="location-name" title="Current Location">Locating...</span>
-      
-      <!-- Change Location Button -->
-      <button id="change-location-btn" title="Change Location">
-        <i data-lucide="edit-2" class="icon"></i> Change
-      </button>
-
-      <!-- Saved locations dropdown -->
+      <span id="location-name">Locating...</span>
+      <button id="change-location-btn">Change Location</button>
       <select id="saved-locations" title="Saved locations" style="display:none;"></select>
-
-      <!-- Remove selected saved location -->
-      <button id="remove-location-btn" title="Remove Selected Location" style="display:none; background:#ff4c4c;">
-        <i data-lucide="trash-2" class="icon"></i> Remove
-      </button>
+      <button id="remove-location-btn" style="display:none; background:#ff4c4c; border:none; color:white; border-radius:6px; padding:8px 12px; margin-left:10px; cursor:pointer;">Remove</button>
     </div>
 
-    <!-- Search area -->
-    <div id="search-area" style="display:none;">
-      <input type="text" id="location-search-input" placeholder="Enter city or place name" aria-label="Location search" />
-      <button id="search-location-btn" title="Search Location">
-        <i data-lucide="search" class="icon"></i> Search
-      </button>
-      <button id="cancel-search-btn" style="background:#444;" title="Cancel Location Search">
-        <i data-lucide="x" class="icon"></i> Cancel
-      </button>
+    <div id="search-area" style="text-align:center; margin-bottom:30px; display:none;">
+      <input type="text" id="location-search-input" placeholder="Enter city or place name" />
+      <button id="search-location-btn">Search</button>
+      <button id="cancel-search-btn" style="background:#444; margin-left:10px;">Cancel</button>
+      <div class="error" id="search-error"></div>
     </div>
-
-    <div class="error" id="search-error"></div>
 
     <h2>Current Weather</h2>
     <div class="info-grid" id="current-info"></div>
@@ -316,9 +229,6 @@
   </footer>
 
   <script>
-    // Activate lucide icons
-    lucide.replace();
-
     const STORAGE_KEY = 'robot_saved_locations';
 
     function saveLocation(name, lat, lon) {
@@ -336,22 +246,13 @@
 
     const savedSelect = document.getElementById('saved-locations');
     const removeBtn = document.getElementById('remove-location-btn');
-    const locationNameEl = document.getElementById('location-name');
-    const changeBtn = document.getElementById('change-location-btn');
-    const searchArea = document.getElementById('search-area');
-    const searchInput = document.getElementById('location-search-input');
-    const searchBtn = document.getElementById('search-location-btn');
-    const cancelSearchBtn = document.getElementById('cancel-search-btn');
-    const errorEl = document.getElementById('search-error');
 
     function updateRemoveButtonVisibility() {
       const locations = getSavedLocations();
-      if(locations.length > 0 && savedSelect.value !== "") {
-        removeBtn.style.display = 'inline-flex';
-        removeBtn.disabled = false;
+      if(locations.length > 0) {
+        removeBtn.style.display = 'inline-block';
       } else {
         removeBtn.style.display = 'none';
-        removeBtn.disabled = true;
       }
     }
 
@@ -367,14 +268,14 @@
       locations.forEach((loc, i) => {
         savedSelect.innerHTML += `<option value="${i}">${loc.name}</option>`;
       });
-      savedSelect.value = "";
       updateRemoveButtonVisibility();
+      removeBtn.disabled = true;
     }
 
     async function fetchWeatherByCoords(lat, lon, name) {
       try {
-        errorEl.textContent = '';
-        locationNameEl.textContent = name || `Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`;
+        document.getElementById('search-error').textContent = '';
+        document.getElementById('location-name').textContent = name || `Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`;
         const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max,uv_index_max,precipitation_sum,sunrise,sunset,apparent_temperature_max,apparent_temperature_min,windgusts_10m_max&timezone=auto`;
         const res = await fetch(weatherUrl);
         const data = await res.json();
@@ -412,124 +313,129 @@
           forecastEl.innerHTML += `
             <div class="forecast-day">
               <div class="label">${daily.time[i]}</div>
-              <div class="value">Max: ${daily.temperature_2m_max[i]}°C</div>
-              <div class="value">Min: ${daily.temperature_2m_min[i]}°C</div>
+              <div class="value">${daily.temperature_2m_min[i]} - ${daily.temperature_2m_max[i]} °C</div>
+              <div class="label">Rain: ${daily.precipitation_sum[i]} mm</div>
+              <div class="label">UV Index: ${daily.uv_index_max[i]}</div>
+              <div class="label">Wind Speed: ${daily.windspeed_10m_max ? daily.windspeed_10m_max[i] + ' km/h' : 'N/A'}</div>
             </div>`;
         }
-      } catch(err) {
-        errorEl.textContent = err.message;
+      } catch (err) {
+        document.getElementById('search-error').textContent = 'Error fetching weather data.';
+        console.error(err);
       }
     }
 
-    // Search and select location handling
+    async function detectLocation() {
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const loc = await res.json();
+        if (loc.latitude && loc.longitude) {
+          fetchWeatherByCoords(loc.latitude, loc.longitude, `${loc.city}, ${loc.country_name}`);
+        } else {
+          throw new Error("Location unavailable");
+        }
+      } catch (e) {
+        document.getElementById('location-name').textContent = 'Unable to detect location.';
+      }
+    }
 
-    changeBtn.addEventListener('click', () => {
-      // Hide location bar controls except cancel button
-      document.getElementById('location-bar').style.display = 'none';
-      searchArea.style.display = 'flex';
-      errorEl.textContent = '';
-      searchInput.value = '';
-      searchInput.focus();
-    });
+    async function geocodeLocation(name) {
+      try {
+        document.getElementById('search-error').textContent = '';
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(name)}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        if (data.length === 0) {
+          document.getElementById('search-error').textContent = 'Location not found.';
+          return null;
+        }
+        return {lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), display_name: data[0].display_name};
+      } catch {
+        document.getElementById('search-error').textContent = 'Error during geocoding.';
+        return null;
+      }
+    }
 
-    cancelSearchBtn.addEventListener('click', () => {
+    // UI elements
+    const changeBtn = document.getElementById('change-location-btn');
+    const searchArea = document.getElementById('search-area');
+    const searchInput = document.getElementById('location-search-input');
+    const searchBtn = document.getElementById('search-location-btn');
+    const cancelBtn = document.getElementById('cancel-search-btn');
+
+    changeBtn.onclick = () => {
+      searchArea.style.display = 'block';
+      savedSelect.style.display = 'inline-block';
+      changeBtn.style.display = 'none';
+      removeBtn.style.display = savedSelect.options.length > 1 ? 'inline-block' : 'none';
+    };
+
+    cancelBtn.onclick = () => {
       searchArea.style.display = 'none';
-      document.getElementById('location-bar').style.display = 'flex';
-      errorEl.textContent = '';
-    });
+      savedSelect.style.display = 'none';
+      changeBtn.style.display = 'inline-block';
+      removeBtn.style.display = 'none';
+      document.getElementById('search-error').textContent = '';
+      searchInput.value = '';
+      savedSelect.value = '';
+    };
 
-    searchBtn.addEventListener('click', async () => {
+    searchBtn.onclick = async () => {
       const query = searchInput.value.trim();
       if (!query) {
-        errorEl.textContent = "Please enter a location name to search.";
+        document.getElementById('search-error').textContent = 'Please enter a location.';
         return;
       }
-      errorEl.textContent = "Searching...";
-      try {
-        // Use Nominatim OpenStreetMap API to search for locations
-        const geoRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5`);
-        const results = await geoRes.json();
-        if (results.length === 0) {
-          errorEl.textContent = "No results found.";
-          return;
-        }
-        errorEl.textContent = "";
-        // If multiple results, prompt user to pick (for simplicity pick first)
-        const chosen = results[0];
-        const displayName = chosen.display_name.split(',')[0];
-        const lat = parseFloat(chosen.lat);
-        const lon = parseFloat(chosen.lon);
-
-        // Save location and update UI
-        saveLocation(displayName, lat, lon);
+      const result = await geocodeLocation(query);
+      if (result) {
+        fetchWeatherByCoords(result.lat, result.lon, result.display_name);
+        saveLocation(result.display_name, result.lat, result.lon);
         populateSavedLocationsDropdown();
-        setSelectedLocation(lat, lon, displayName);
-        searchArea.style.display = 'none';
-        document.getElementById('location-bar').style.display = 'flex';
-      } catch(e) {
-        errorEl.textContent = "Error searching location. Try again.";
+        cancelBtn.onclick();
       }
-    });
+    };
 
-    // On saved location select
-    savedSelect.addEventListener('change', () => {
+    savedSelect.onchange = () => {
       const idx = savedSelect.value;
-      if(idx === "") return;
-      const locations = getSavedLocations();
-      const loc = locations[idx];
-      if(loc) {
-        setSelectedLocation(loc.lat, loc.lon, loc.name);
-        updateRemoveButtonVisibility();
+      if (idx === "") {
+        removeBtn.disabled = true;
+        return;
       }
-    });
+      removeBtn.disabled = false;
+      const loc = getSavedLocations()[idx];
+      if (loc) {
+        fetchWeatherByCoords(loc.lat, loc.lon, loc.name);
+      }
+    };
 
-    // Remove selected saved location
-    removeBtn.addEventListener('click', () => {
+    removeBtn.onclick = () => {
       const idx = savedSelect.value;
-      if(idx === "") return;
+      if (idx === "") return;
       let locations = getSavedLocations();
       locations.splice(idx, 1);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(locations));
       populateSavedLocationsDropdown();
-      locationNameEl.textContent = 'Location Removed';
-      document.getElementById('current-info').innerHTML = '';
-      document.getElementById('daily-forecast').innerHTML = '';
-      updateRemoveButtonVisibility();
-    });
-
-    function setSelectedLocation(lat, lon, name) {
-      locationNameEl.textContent = name;
-      fetchWeatherByCoords(lat, lon, name);
-    }
-
-    // Initial Geolocation and setup
-    async function initialize() {
-      populateSavedLocationsDropdown();
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(pos => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          setSelectedLocation(lat, lon, "Your Location");
-        }, err => {
-          // No geolocation or error fallback
-          const saved = getSavedLocations();
-          if(saved.length > 0) {
-            setSelectedLocation(saved[0].lat, saved[0].lon, saved[0].name);
-          } else {
-            locationNameEl.textContent = "No Location Selected";
-          }
-        });
+      removeBtn.disabled = true;
+      savedSelect.value = '';
+      if (locations.length > 0) {
+        // Load first saved location by default
+        fetchWeatherByCoords(locations[0].lat, locations[0].lon, locations[0].name);
       } else {
-        const saved = getSavedLocations();
-        if(saved.length > 0) {
-          setSelectedLocation(saved[0].lat, saved[0].lon, saved[0].name);
-        } else {
-          locationNameEl.textContent = "No Location Selected";
-        }
+        detectLocation();
       }
-    }
+    };
 
-    initialize();
+    // On load
+    window.onload = () => {
+      populateSavedLocationsDropdown();
+      const saved = getSavedLocations();
+      if (saved.length > 0) {
+        fetchWeatherByCoords(saved[0].lat, saved[0].lon, saved[0].name);
+      } else {
+        detectLocation();
+      }
+    };
   </script>
+
 </body>
 </html>
