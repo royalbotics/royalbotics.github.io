@@ -186,18 +186,32 @@
       color: #888;
       margin-top: 60px;
     }
-    body, input, textarea {
+ body, input, textarea {
   cursor: url('https://royalbotics.github.io/cra/mouse_coursour.png') 0 0, auto;
 }
 
 a, button, [role="button"], .clickable {
   cursor: url('https://royalbotics.github.io/cra/mouse_coursour_grab.png') 0 0, pointer;
 }
+ #weather-background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.1; /* 70% transparent */
+      pointer-events: none; /* clicks go through */
+      z-index: 0;
+      transition: background-image 0.5s ease-in-out;
+    }
 
-
-  </style>
+ </style>
 </head>
 <body>
+<!-- Weather Background Image -->
+  <div id="weather-background"></div>
 
   <nav>
     <a href="index.html">Home</a>
@@ -320,8 +334,25 @@ Transparancy comes first so you can see the stats board <a href="https://www.fre
 </script>
 
   <footer>
-    &copy; 2025 Royal Botics. All Rights Reserved.
-    <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=4ca1bc202b5d263808adbfc427e3aa2a37ebdbf3'></script>
+    &copy; 2025 Royal Botics. All Rights Reserved. | Ro&Bot™ Weather version 3.0.2
+   <style>.weather-link {
+  display: inline-block;
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+position: centre;
+  color: #007acc;
+  text-decoration: none;
+  border-bottom: 1px dashed #007acc;
+  padding: 2px 0;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}.weather-link:hover {
+  color: #005b99;
+  border-color: #005b99;}
+</style>
+<a href="https://royalbotics.github.io/weather/api" class="weather-link">
+  Get Ro&Bot™ free API access — add a simple weather forecast to your website
+</a>
+  <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=4ca1bc202b5d263808adbfc427e3aa2a37ebdbf3'></script>
   </footer>
 
 
@@ -370,57 +401,62 @@ Transparancy comes first so you can see the stats board <a href="https://www.fre
     }
 
     async function fetchWeatherByCoords(lat, lon, name) {
-      try {
-        document.getElementById('search-error').textContent = '';
-        document.getElementById('location-name').textContent = name || `Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`;
-        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max,uv_index_max,precipitation_sum,sunrise,sunset,apparent_temperature_max,apparent_temperature_min,windgusts_10m_max&timezone=auto`;
-        const res = await fetch(weatherUrl);
-        const data = await res.json();
+  try {
+    document.getElementById('search-error').textContent = '';
+    document.getElementById('location-name').textContent = name || `Lat: ${lat.toFixed(4)}, Lon: ${lon.toFixed(4)}`;
+    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,weathercode,windspeed_10m_max,uv_index_max,precipitation_sum,sunrise,sunset,apparent_temperature_max,apparent_temperature_min,windgusts_10m_max&timezone=auto`;
+    const res = await fetch(weatherUrl);
+    const data = await res.json();
 
-        if(!data.current_weather) throw new Error("Weather data not available");
+    if(!data.current_weather) throw new Error("Weather data not available");
 
-        const current = data.current_weather;
-        const daily = data.daily;
+    const current = data.current_weather;
+    const daily = data.daily;
 
-        const currentInfo = {
-          "Temperature": `${current.temperature} °C`,
-          "Wind Speed": `${current.windspeed} km/h`,
-          "Wind Direction": `${current.winddirection}°`,
-          "Weather Code": current.weathercode,
-          "UV Index (Max)": daily.uv_index_max[0],
-          "Precipitation": `${daily.precipitation_sum[0]} mm`,
-          "Sunrise": daily.sunrise[0].split("T")[1],
-          "Sunset": daily.sunset[0].split("T")[1],
-          "Apparent Temp. Max": `${daily.apparent_temperature_max[0]} °C`,
-          "Apparent Temp. Min": `${daily.apparent_temperature_min[0]} °C`,
-          "Wind Gusts Max": `${daily.windgusts_10m_max[0]} km/h`
-        };
+    // Set the background image based on weather code
+    setWeatherBackground(current.weathercode);
 
-        const infoEl = document.getElementById('current-info');
-        infoEl.innerHTML = '';
-        for (const [label, value] of Object.entries(currentInfo)) {
-          infoEl.innerHTML += `
-            <div class="info-label">${label}</div>
-            <div class="info-value">${value}</div>`;
-        }
+    const currentInfo = {
+      "Temperature": `${current.temperature} °C`,
+      "Wind Speed": `${current.windspeed} km/h`,
+      "Wind Direction": `${current.winddirection}°`,
+      "Weather": weatherCodeMap[current.weathercode] || `Unknown (${current.weathercode})`,
 
-        const forecastEl = document.getElementById('daily-forecast');
-        forecastEl.innerHTML = '';
-        for (let i = 0; i < daily.time.length; i++) {
-          forecastEl.innerHTML += `
-            <div class="forecast-day">
-              <div class="label">${daily.time[i]}</div>
-              <div class="value">${daily.temperature_2m_min[i]} - ${daily.temperature_2m_max[i]} °C</div>
-              <div class="label">Rain: ${daily.precipitation_sum[i]} mm</div>
-              <div class="label">UV Index: ${daily.uv_index_max[i]}</div>
-              <div class="label">Wind Speed: ${daily.windspeed_10m_max ? daily.windspeed_10m_max[i] + ' km/h' : 'N/A'}</div>
-            </div>`;
-        }
-      } catch (err) {
-        document.getElementById('search-error').textContent = 'Error fetching weather data.';
-        console.error(err);
-      }
+      "UV Index (Max)": daily.uv_index_max[0],
+      "Precipitation": `${daily.precipitation_sum[0]} mm`,
+      "Sunrise": daily.sunrise[0].split("T")[1],
+      "Sunset": daily.sunset[0].split("T")[1],
+      "Apparent Temp. Max": `${daily.apparent_temperature_max[0]} °C`,
+      "Apparent Temp. Min": `${daily.apparent_temperature_min[0]} °C`,
+      "Wind Gusts Max": `${daily.windgusts_10m_max[0]} km/h`
+    };
+
+    const infoEl = document.getElementById('current-info');
+    infoEl.innerHTML = '';
+    for (const [label, value] of Object.entries(currentInfo)) {
+      infoEl.innerHTML += `
+        <div class="info-label">${label}</div>
+        <div class="info-value">${value}</div>`;
     }
+
+    const forecastEl = document.getElementById('daily-forecast');
+    forecastEl.innerHTML = '';
+    for (let i = 0; i < daily.time.length; i++) {
+      forecastEl.innerHTML += `
+        <div class="forecast-day">
+          <div class="label">${daily.time[i]}</div>
+          <div class="value">${daily.temperature_2m_min[i]} - ${daily.temperature_2m_max[i]} °C</div>
+          <div class="label">Rain: ${daily.precipitation_sum[i]} mm</div>
+          <div class="label">UV Index: ${daily.uv_index_max[i]}</div>
+          <div class="label">Wind Speed: ${daily.windspeed_10m_max ? daily.windspeed_10m_max[i] + ' km/h' : 'N/A'}</div>
+        </div>`;
+    }
+  } catch (err) {
+    document.getElementById('search-error').textContent = 'Error fetching weather data.';
+    console.error(err);
+  }
+}
+
 
     async function detectLocation() {
       try {
@@ -532,6 +568,81 @@ Transparancy comes first so you can see the stats board <a href="https://www.fre
         detectLocation();
       }
     };
+function setWeatherBackground(weatherCode) {
+  const bg = document.getElementById('weather-background');
+  let imageUrl = '';
+
+  switch (weatherCode) {
+    case 0:
+      imageUrl = 'https://royalbotics.github.io/cra/weather/clear-sky.png'; // clear sky
+      break;
+    case 1:
+    case 2:
+    case 3:
+      imageUrl = 'https://royalbotics.github.io/cra/weather/cloudy.png'; // cloudy
+      break;
+    case 45:
+    case 48:
+      imageUrl = 'https://royalbotics.github.io/cra/weather/partly-cloudy.png'; // fog
+      break;
+    case 51:
+    case 53:
+    case 55:
+      imageUrl = 'https://royalbotics.github.io/cra/weather/drizzle.png'; // drizzle
+      break;
+    case 61:
+    case 63:
+    case 65:
+      imageUrl = 'https://royalbotics.github.io/cra/weather/rain.png'; // rain
+      break;
+    case 71:
+    case 73:
+    case 75:
+      imageUrl = 'https://royalbotics.github.io/cra/weather/snow.png'; // snow
+      break;
+    case 95:
+    case 96:
+    case 99:
+      imageUrl = 'https://royalbotics.github.io/cra/weather/thunderstorm.png'; // thunderstorm (reuse cloudy)
+      break;
+    default:
+      imageUrl = 'https://royalbotics.github.io/cra/weather/weather-img.webp'; // default clear
+  }
+
+  bg.style.backgroundImage = `url('${imageUrl}')`;
+}
+const weatherCodeMap = {
+  0: "Clear sky",
+  1: "Mainly clear",
+  2: "Partly cloudy",
+  3: "Overcast",
+  45: "Fog",
+  48: "Depositing rime fog",
+  51: "Light drizzle",
+  53: "Moderate drizzle",
+  55: "Dense drizzle",
+  56: "Light freezing drizzle",
+  57: "Dense freezing drizzle",
+  61: "Slight rain",
+  63: "Moderate rain",
+  65: "Heavy rain",
+  66: "Light freezing rain",
+  67: "Heavy freezing rain",
+  71: "Slight snow fall",
+  73: "Moderate snow fall",
+  75: "Heavy snow fall",
+  77: "Snow grains",
+  80: "Slight rain showers",
+  81: "Moderate rain showers",
+  82: "Violent rain showers",
+  85: "Slight snow showers",
+  86: "Heavy snow showers",
+  95: "Thunderstorm",
+  96: "Thunderstorm with slight hail",
+  99: "Thunderstorm with heavy hail"
+};
+
+
   </script>
 
 </body>
