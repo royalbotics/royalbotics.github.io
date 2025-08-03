@@ -2,64 +2,136 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SamanthAI Chat</title>
-<link rel="icon" href="/favicon.png" type="image/png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SamanthAI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      margin: 0;
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom, #000000 0%, #3b0056 100%);
+      background: linear-gradient(to bottom, #000 0%, #3b0056 100%);
       color: #e5e5e5;
       display: flex;
       flex-direction: column;
       height: 100vh;
+      overflow: hidden;
+    }
+
+    body > * {
+      z-index: 1;
+      position: relative;
+    }
+
+    /* --- Mask Overlay --- */
+    #mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+      pointer-events: all;
+    }
+
+    #mask span {
+      padding: 20px;
+      background: rgba(20, 0, 30, 0.5);
+      border: 1px solid #a100f2;
+      border-radius: 12px;
     }
 
     header {
-      background: rgba(0,0,0,0.6);
+      background: rgba(0, 0, 0, 0.6);
       padding: 15px 20px;
       display: flex;
       align-items: center;
-      gap: 15px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    header a {
-      color: #a100f2;
-      font-size: 1.5rem;
-      text-decoration: none;
-      font-weight: 700;
-      user-select: none;
+      justify-content: center;
+      position: relative;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     header h1 {
-      margin: 0;
+      font-size: 1.6rem;
       font-weight: 600;
-      font-size: 1.8rem;
       color: #e5e5e5;
+      user-select: none;
     }
+
+    #menu-btn {
+      position: absolute;
+      left: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+    }
+
+    #menu-btn img { width: 28px; height: 28px; user-select: none; }
+
+    #side-menu {
+      position: fixed;
+      top: 0;
+      left: -240px;
+      width: 240px;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      box-shadow: 3px 0 8px rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      transition: left 0.3s ease;
+      z-index: 1000;
+    }
+
+    #side-menu.open { left: 0; }
+
+    #side-menu button {
+      background: #a100f2;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #side-menu button:hover { background: #8600cc; }
 
     #chat-window {
       flex: 1;
-      padding: 20px;
+      padding: 16px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 12px;
-      background: rgba(0,0,0,0.4);
-      border-radius: 0 0 20px 20px;
+      background: rgba(0, 0, 0, 0.4);
+      transition: margin-left 0.3s ease;
     }
 
+    #chat-window.menu-open { margin-left: 240px; }
+
     .message {
-      max-width: 70%;
-      padding: 12px 20px;
+      max-width: 85%;
+      padding: 12px 18px;
       border-radius: 20px;
       line-height: 1.4;
-      word-wrap: break-word;
-      user-select: text;
+      word-break: break-word;
     }
 
     .message.user {
@@ -77,163 +149,348 @@
     }
 
     #input-area {
-      background: rgba(0,0,0,0.6);
-      padding: 15px 20px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 12px 16px;
       display: flex;
-      gap: 12px;
-      border-top: 1px solid rgba(255,255,255,0.1);
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     #user-input {
       flex: 1;
-      padding: 12px 18px;
+      padding: 12px 16px;
       font-size: 1rem;
       border: none;
       border-radius: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #e5e5e5;
       outline: none;
-      font-family: 'Poppins', sans-serif;
     }
 
-    #send-btn {
-      padding: 12px 22px;
-      background: #a100f2;
-      border: none;
+    #send-btn,
+    #keyboard-toggle {
+      width: 48px;
+      height: 48px;
+      padding: 12px;
       border-radius: 30px;
-      color: white;
-      font-weight: 600;
+      border: none;
       cursor: pointer;
-      transition: background 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       user-select: none;
+      transition: background 0.3s ease;
     }
 
-    #send-btn:hover {
-      background: #8600cc;
+    #send-btn { background: #a100f2; }
+    #send-btn:hover { background: #8600cc; }
+
+    #keyboard-toggle { background: #444; }
+    #keyboard-toggle:hover { background: #666; }
+
+    #keyboard {
+      display: none;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    #keyboard button {
+      flex: 1 0 9%;
+      min-width: 36px;
+      padding: 10px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 10px;
+      background: #2a003f;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    #keyboard button:hover { background: #3d005a; }
+
+    #keyboard button.space {
+      flex: 1 0 40%;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background: #3d005a;
+      border-radius: 20px;
+    }
+
+    #keyboard button.space:hover { background: #54007a; }
+
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.3rem; }
+      #chat-window { padding: 12px; }
+      #input-area { flex-direction: column; gap: 8px; }
+      .message { max-width: 100%; }
+      #keyboard button { flex: 1 0 12%; font-size: 0.9rem; }
+      #keyboard button.space { flex: 1 0 60%; }
     }
   </style>
 </head>
 <body>
+  <div id="mask">
+    <span>🔒 SamanthAI is currently locked
+<p><h6>SamanthAI will be avilable in 3 months.</h6></p></span>
+
+  </div>
 
   <header>
-    <a href="samanthai.html" title="Go Back">&#8592;</a>
-    <h1>SamanthAI Chat</h1>
+   
+    </button>
+    <h1>SamanthAI</h1>
   </header>
 
-  <div id="chat-window">
-    <!-- Chat messages appear here -->
+  <nav id="side-menu" aria-label="Side menu">
+    <button id="new-chat-btn">New Chat</button>
+    <button id="clear-chat-btn">Clear Chat</button>
+  </nav>
+
+  <div id="chat-window" role="log" aria-live="polite">
+    <div class="message bot">Hello, how can I help?</div>
+    <div class="message user">Plan my tommorow.</div>
+     <div class="message bot">Ok here are your tommorows plans.</div>
+    <div class="message user">Help me with my homework.</div>
+    <div class="message bot">Send me a picture of your homework.</div>
+  <div class="message user">What will be the weather like tommorw?</div>
+  <div class="message bot"><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather Box Three Days</title>
+  <style>
+    body {
+      background: #1a003f;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #e5e5e5;
+    }
+
+    #weather-box {
+      position: relative;
+      width: 320px;
+      padding: 12px 16px 16px 16px;
+      border: 1px solid #a100f2;
+      border-top: 1px solid transparent;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.3);
+      font-weight: 600;
+      font-size: 0.9rem;
+      user-select: none;
+      box-sizing: border-box;
+    }
+
+    #weather-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      border-top: 1px solid #a100f2;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #weather-label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #1a003f;
+      padding: 0 8px;
+      font-size: 0.7rem;
+      color: #a100f2;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+      line-height: 1.2;
+      user-select: none;
+      transform: translateY(-50%);
+      z-index: 1;
+      border-radius: 0 0 4px 4px;
+      box-sizing: content-box;
+      text-align: left;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+
+    #weather-label:hover {
+      color: #d183f7;
+    }
+
+    .weather-days {
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+    }
+
+    .weather-day {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 70px;
+      text-align: center;
+    }
+
+    .weather-day .day {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .weather-day .temp {
+      font-size: 1.3rem;
+      color: #a100f2;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <div id="weather-box">
+    <a href="https://royalbotics.github.io/weather" id="weather-label" target="_blank" rel="noopener noreferrer">
+      Ro&Bot™ WEATHER
+    </a>
+
+    <div class="weather-days" id="weather-days">
+      <div class="weather-day">
+        <span class="day">Today</span>
+        <span class="temp" id="temp-today">--</span>
+      </div>
+      <div class="weather-day">
+        <span class="day">Tomorrow</span>
+        <span class="temp" id="temp-tomorrow">--</span>
+      </div>
+      <div class="weather-day">
+        <span class="day">Day after</span>
+        <span class="temp" id="temp-dayafter">--</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function fetchLocation() {
+      try {
+        const res = await fetch('http://ip-api.com/json/');
+        const data = await res.json();
+        if (data.status === "success") {
+          fetchWeather(data.lat, data.lon);
+        } else {
+          console.error("Geolocation failed");
+        }
+      } catch (err) {
+        console.error("Location error:", err);
+      }
+    }
+
+    async function fetchWeather(lat, lon) {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=auto`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const temps = data.daily.temperature_2m_max;
+
+        if (temps.length >= 3) {
+          document.getElementById("temp-today").textContent = temps[0] + "°C";
+          document.getElementById("temp-tomorrow").textContent = temps[1] + "°C";
+          document.getElementById("temp-dayafter").textContent = temps[2] + "°C";
+        }
+      } catch (err) {
+        console.error("Weather fetch failed:", err);
+      }
+    }
+
+    fetchLocation();
+  </script>
+</body>
+</html>
+</div>
   </div>
 
   <div id="input-area">
     <input id="user-input" type="text" placeholder="Type your message..." autocomplete="off" />
-    <button id="send-btn">Send</button>
+    <button id="send-btn" aria-label="Send">
+      <img src="https://img.icons8.com/ios-filled/24/ffffff/filled-sent.png" alt="Send" />
+    </button>
+    <button id="keyboard-toggle" aria-label="Toggle keyboard">
+      <img src="https://img.icons8.com/ios-filled/24/ffffff/keyboard.png" alt="Keyboard" />
+    </button>
   </div>
 
-  <script>
-    const chat = document.getElementById('chat-window');
-    const input = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
+  <div id="keyboard"></div>
+<script>
+  const correctToken = "D6ci07rIQFTY5xth"; // Your token here
+  const redirectUrl = "https://royalbotics.github.io/testing/samanthai-dev.html";
 
-    sendBtn.addEventListener('click', sendMessage);
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Enter') sendMessage();
-    });
+  // Create custom context menu
+  const contextMenu = document.createElement("div");
+  contextMenu.id = "custom-context";
+  contextMenu.textContent = "🔑 Enter Token";
+  Object.assign(contextMenu.style, {
+    position: "fixed",
+    background: "#1a003f",
+    color: "#fff",
+    padding: "10px 14px",
+    borderRadius: "8px",
+    border: "1px solid #a100f2",
+    fontSize: "0.9rem",
+    zIndex: "10000",
+    display: "none",
+    cursor: "pointer",
+    boxShadow: "0 0 6px #a100f2",
+    userSelect: "none"
+  });
+  document.body.appendChild(contextMenu);
 
-    function sendMessage() {
-      const text = input.value.trim();
-      if (!text) return;
+  // Show custom menu on right-click
+  document.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+    contextMenu.style.left = e.pageX + "px";
+    contextMenu.style.top = e.pageY + "px";
+    contextMenu.style.display = "block";
+  });
 
-      // User message
-      const userMsg = document.createElement('div');
-      userMsg.className = 'message user';
-      userMsg.textContent = text;
-      chat.appendChild(userMsg);
-      chat.scrollTop = chat.scrollHeight;
+  // Hide menu on click elsewhere
+  document.addEventListener("click", () => {
+    contextMenu.style.display = "none";
+  });
 
-      input.value = '';
-
-      // Bot simulated response + notify message + buttons
-      setTimeout(() => {
-        const botMsg = document.createElement('div');
-        botMsg.className = 'message bot';
-        botMsg.textContent = ` I'm still learning to respond. 😊`;
-        chat.appendChild(botMsg);
-
-        const notifyMsg = document.createElement('div');
-        notifyMsg.className = 'message bot';
-        notifyMsg.textContent = "I can notify you when I'm ready for chatting.";
-        chat.appendChild(notifyMsg);
-
-        // Buttons container
-        const btnContainer = document.createElement('div');
-        btnContainer.style.marginTop = '10px';
-        btnContainer.style.display = 'flex';
-        btnContainer.style.gap = '10px';
-
-        // Notify Me button
-        const notifyBtn = document.createElement('button');
-        notifyBtn.textContent = "Notify Me";
-        notifyBtn.style = `
-          padding: 8px 15px;
-          border-radius: 20px;
-          background: #a100f2;
-          color: white;
-          border: none;
-          cursor: pointer;
-          font-weight: 600;
-          flex: 1;
-        `;
-        notifyBtn.onclick = () => {
-          if (Notification.permission === "granted") {
-            showNotification();
-          } else if (Notification.permission !== "denied") {
-            Notification.requestPermission().then(permission => {
-              if (permission === "granted") {
-                showNotification();
-              } else {
-                alert("Notification permission denied.");
-              }
-            });
-          } else {
-            alert("Please enable notifications in your browser settings.");
-          }
-          notifyBtn.disabled = true;
-          noThanksBtn.disabled = true;
-        };
-
-        // No Thanks button
-        const noThanksBtn = document.createElement('button');
-        noThanksBtn.textContent = "No Thanks";
-        noThanksBtn.style = `
-          padding: 8px 15px;
-          border-radius: 20px;
-          background: #555;
-          color: white;
-          border: none;
-          cursor: pointer;
-          font-weight: 600;
-          flex: 1;
-        `;
-        noThanksBtn.onclick = () => {
-          notifyBtn.disabled = true;
-          noThanksBtn.disabled = true;
-        };
-
-        btnContainer.appendChild(notifyBtn);
-        btnContainer.appendChild(noThanksBtn);
-        chat.appendChild(btnContainer);
-
-        chat.scrollTop = chat.scrollHeight;
-      }, 800);
-    }
-
-   
-
-    // Optional: Prompt notification permission early on page load
-    document.addEventListener("DOMContentLoaded", () => {
-      if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-        Notification.requestPermission();
+  // Handle token entry & redirect
+  contextMenu.addEventListener("click", () => {
+    const token = prompt("Enter your access token:");
+    if (token === correctToken) {
+      // Remove mask with fade
+      const mask = document.getElementById("mask");
+      if (mask) {
+        mask.style.transition = "opacity 0.5s ease";
+        mask.style.opacity = 0;
+        setTimeout(() => mask.remove(), 500);
       }
-    });
-  </script>
+      // Redirect after slight delay to let mask fade
+      setTimeout(() => {
+        window.location.href = redirectUrl;
+      }, 600);
+    } else {
+      alert("Invalid token. Try again.");
+    }
+    contextMenu.style.display = "none";
+  });
+</script>
 
 </body>
 </html>
