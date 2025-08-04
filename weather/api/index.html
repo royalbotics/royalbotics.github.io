@@ -1,2 +1,89 @@
-<title>API not avilble now.</title>
-<h1>Free API or any API is not avilable right now. Sorry the mistake is on our side, the free API should be avilable soon.</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ro&Bot™ Weather Box</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #000000 0%, #3b0056 100%);
+      color: #e5e5e5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    p {
+      max-width: 800px;
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      color: #ccc;
+    }
+
+    iframe {
+      border: 2px solid #a100f2;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 500px;
+      height: 300px;
+      box-shadow: 0 0 20px #a100f288;
+      margin-bottom: 30px;
+    }
+
+    code {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 10px;
+      display: inline-block;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.95rem;
+      color: #d183f7;
+      margin-top: 10px;
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 0.9rem;
+      color: #777;
+      text-align: center;
+    }
+
+    a {
+      color: #a100f2;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Ro&Bot™ Weather Box</h1>
+  <p>
+    Embed the official <strong>Ro&Bot™ Weather Box</strong> anywhere on your site. It's powered by our free API and updates automatically with current conditions.
+  </p>
+
+  <iframe src="https://royalbotics.github.io/weather/api/box" title="Ro&Bot Weather Box" loading="lazy"></iframe>
+
+  <p>Copy and paste the following HTML snippet into your website:</p>
+  <code>&lt;iframe src="https://royalbotics.github.io/weather/api/box" width="500" height="300" style="border:2px solid #a100f2;border-radius:10px;" loading="lazy"&gt;&lt;/iframe&gt;</code>
+
+  <footer>
+    Built by <a href="https://royalbotics.github.io" target="_blank">Royalbotics</a> • Weather data via Ro&Bot™ API
+  </footer>
+
+</body>
+</html>
