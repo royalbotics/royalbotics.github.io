@@ -729,25 +729,62 @@ const weatherCodeMap = {
   let currentScroll = 0;
   const ease = 0.1;
 
-  // Update targetScroll on wheel scroll
+  // Variables for touch events
+  let touchStartY = 0;
+  let isTouching = false;
+
+  // Update targetScroll on wheel scroll (for desktops)
   window.addEventListener('wheel', (e) => {
-    e.preventDefault(); // prevent default to override instantly
+    e.preventDefault();
     targetScroll += e.deltaY;
     targetScroll = Math.max(0, Math.min(targetScroll, document.body.scrollHeight - window.innerHeight));
   }, { passive: false });
 
+  // Handle touch events for mobile devices
+  window.addEventListener('touchstart', (e) => {
+    // If more than one finger, don't interfere
+    if (e.touches.length > 1) return;
+    isTouching = true;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!isTouching || e.touches.length > 1) return;
+
+    const touchY = e.touches[0].clientY;
+    const deltaY = touchY - touchStartY;
+    touchStartY = touchY;
+
+    // Invert deltaY for scrolling direction
+    targetScroll -= deltaY;
+
+    // Clamp the targetScroll to prevent scrolling past the content
+    targetScroll = Math.max(0, Math.min(targetScroll, document.body.scrollHeight - window.innerHeight));
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    isTouching = false;
+  }, { passive: true });
+
   function smoothScroll() {
-    currentScroll += (targetScroll - currentScroll) * ease;
+    // Check if the user is currently touching the screen
+    if (!isTouching) {
+      currentScroll += (targetScroll - currentScroll) * ease;
 
-    // Scroll the window smoothly
-    window.scrollTo(0, currentScroll);
-
+      // Scroll the window smoothly
+      window.scrollTo(0, currentScroll);
+    }
+    
     requestAnimationFrame(smoothScroll);
   }
 
+  // Set the initial currentScroll to the current scroll position
+  currentScroll = window.scrollY;
+  targetScroll = window.scrollY;
+
   smoothScroll();
 })();
-
+    
   </script>
 
 </body>
