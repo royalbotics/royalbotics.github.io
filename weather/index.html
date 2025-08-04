@@ -766,24 +766,7 @@ const weatherCodeMap = {
     isTouching = false;
   }, { passive: true });
 
-  function smoothScroll() {
-    // Check if the user is currently touching the screen
-    if (!isTouching) {
-      currentScroll += (targetScroll - currentScroll) * ease;
-
-      // Scroll the window smoothly
-      window.scrollTo(0, currentScroll);
-    }
-    
-    requestAnimationFrame(smoothScroll);
-  }
-
-  // Set the initial currentScroll to the current scroll position
-  currentScroll = window.scrollY;
-  targetScroll = window.scrollY;
-
-  smoothScroll();
-})();
+  
     
   </script>
 
