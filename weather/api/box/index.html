@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Weather Box Three Days</title>
+  <style>
+    body {
+      background: #1a003f;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #e5e5e5;
+    }
+
+    #weather-box {
+      position: relative;
+      width: 320px;
+      padding: 12px 16px 16px 16px;
+      border: 1px solid #a100f2;
+      border-top: 1px solid transparent;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.3);
+      font-weight: 600;
+      font-size: 0.9rem;
+      user-select: none;
+      box-sizing: border-box;
+    }
+
+    #weather-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      border-top: 1px solid #a100f2;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #weather-label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #1a003f;
+      padding: 0 8px;
+      font-size: 0.7rem;
+      color: #a100f2;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+      line-height: 1.2;
+      user-select: none;
+      transform: translateY(-50%);
+      z-index: 1;
+      border-radius: 0 0 4px 4px;
+      box-sizing: content-box;
+      text-align: left;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+
+    #weather-label:hover {
+      color: #d183f7;
+    }
+
+    .weather-days {
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+    }
+
+    .weather-day {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 70px;
+      text-align: center;
+    }
+
+    .weather-day .day {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .weather-day .temp {
+      font-size: 1.3rem;
+      color: #a100f2;
+      font-weight: 700;
+    }
+ /* Weather background overlay */
+    #weather-background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.3; /* 70% transparent */
+      pointer-events: none; /* clicks go through */
+      z-index: 0;
+      transition: background-image 0.5s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+<!-- Weather Background Image -->
+  <div id="weather-background"></div>
+
+  <div id="weather-box">
+    <a href="https://royalbotics.github.io/weather" id="weather-label" target="_blank" rel="noopener noreferrer">
+      Ro&Bot™ WEATHER
+    </a>
+
+    <div class="weather-days" id="weather-days">
+      <div class="weather-day">
+        <span class="day">Today</span>
+        <span class="temp" id="temp-today">--</span>
+      </div>
+      <div class="weather-day">
+        <span class="day">Tomorrow</span>
+        <span class="temp" id="temp-tomorrow">--</span>
+      </div>
+      <div class="weather-day">
+        <span class="day">Day after</span>
+        <span class="temp" id="temp-dayafter">--</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function fetchLocation() {
+      try {
+        const res = await fetch('http://ip-api.com/json/');
+        const data = await res.json();
+        if (data.status === "success") {
+          fetchWeather(data.lat, data.lon);
+        } else {
+          console.error("Geolocation failed");
+        }
+      } catch (err) {
+        console.error("Location error:", err);
+      }
+    }
+
+    async function fetchWeather(lat, lon) {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max&timezone=auto`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const temps = data.daily.temperature_2m_max;
+
+        if (temps.length >= 3) {
+          document.getElementById("temp-today").textContent = temps[0] + "°C";
+          document.getElementById("temp-tomorrow").textContent = temps[1] + "°C";
+          document.getElementById("temp-dayafter").textContent = temps[2] + "°C";
+        }
+      } catch (err) {
+        console.error("Weather fetch failed:", err);
+      }
+    }
+ // Map weather codes to image filenames
+    const weatherCodeToImage = {
+      0: 'sun.png',
+      1: 'partlycloudy.png',
+      2: 'cloudy.png',
+      3: 'cloudy.png',
+      45: 'fog.png',
+      48: 'fog.png',
+      51: 'rain.png',
+      53: 'rain.png',
+      55: 'rain.png',
+      61: 'rain.png',
+      63: 'rain.png',
+      65: 'rain.png',
+      66: 'snow.png',
+      67: 'snow.png',
+      71: 'snow.png',
+      73: 'snow.png',
+      75: 'snow.png',
+      77: 'snow.png',
+      80: 'rain.png',
+      81: 'rain.png',
+      82: 'rain.png',
+      85: 'snow.png',
+      86: 'snow.png',
+      95: 'thunderstorm.png',
+      96: 'thunder_sun.png',
+      99: 'thunder_sun.png',
+    };
+
+    const weatherBackground = document.getElementById('weather-background');
+    const locationNameElem = document.getElementById('location-name');
+    const currentInfoElem = document.getElementById('current-info');
+
+    fetchLocation();
+  </script>
+</body>
+</html>
