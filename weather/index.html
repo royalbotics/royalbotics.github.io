@@ -1,3 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ro&Bot™ Weather</title>
+  <meta name="description" content="Comprehensive weather forecast by Ro&Bot Royal Botics" />
+  <meta name="author" content="Ro&Bot Royal Botics" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="icon" href="/favicon.png" type="image/png" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #000000 0%, #3b0056 100%);
+      color: #e5e5e5;
+    }
+
+    nav {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      padding: 15px 30px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    nav a {
+      color: #e5e5e5;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: #a100f2;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      padding: 40px 20px 80px;
+      text-align: left;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1.6rem;
+      margin-top: 50px;
+      color: #fff;
+      border-bottom: 2px solid #a100f2;
+      padding-bottom: 6px;
+    }
+
+    .location-bar {
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 600;
+      color: #d183f7;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button, input, select {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    button {
+      background: #a100f2;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #d183f7;
+    }
+
+    input[type="text"] {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #a100f2;
+      background: rgba(0,0,0,0.3);
+      color: #e5e5e5;
+      outline: none;
+      min-width: 200px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: #d183f7;
+    }
+
+    select {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid #a100f2;
+      color: #e5e5e5;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 1rem;
+      cursor: pointer;
+      min-width: 200px;
+    }
+
+    .error {
+      color: #ff4c4c;
+      text-align: center;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 20px;
+      font-size: 1rem;
+      margin-top: 10px;
+      margin-bottom: 40px;
+    }
+
+    .info-label {
+      opacity: 0.7;
+    }
+
+    .info-value {
+      font-weight: 600;
+      color: #a100f2;
+      text-align: right;
+    }
+
+    .forecast {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .forecast-day {
+      background: rgba(255, 255, 255, 0.03);
+      opacity: 0.9;
+      border: 1px solid #a100f222;
+      border-radius: 8px;
+      padding: 15px 10px;
+      text-align: center;
+      box-shadow: 0 0 10px #a100f2aa;
+      color: #e5e5e5;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .forecast-day .label {
+      font-size: 0.75rem;
+      opacity: 0.7;
+      margin-bottom: 6px;
+    }
+
+    .forecast-day .value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #a100f2;
+      margin-bottom: 6px;
+opacity: 0.9;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #111;
+      font-size: 0.9rem;
+      color: #888;
+      margin-top: 60px;
+    }
+ body, input, textarea {
+  cursor: url('https://royalbotics.github.io/cra/mouse_coursour.png') 0 0, auto;
+}
+
+a, button, [role="button"], .clickable {
+  cursor: url('https://royalbotics.github.io/cra/mouse_coursour_grab.png') 0 0, pointer;
+}
+ #weather-background {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      opacity: 0.15; /* 70% transparent */
+      pointer-events: none; /* clicks go through */
+      z-index: 0;
+      transition: background-image 0.5s ease-in-out;
+    }
+
+ </style>
+</head>
+<body>
+<!-- Weather Background Image -->
+  <div id="weather-background"></div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="samanthai.html">SamanthAI</a>
+    <a href="mission.html">Mission</a>
+    <a href="tof.html">Terms</a>
+    <a href="contact.html">Contact</a>
+    <a href="research.html">Research</a>
+  </nav>
+
+  <div class="container">
+    <h1>Ro&Bot™ Weather</h1>
+
+    <div class="location-bar" id="location-bar" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+  <span id="location-name" style="font-weight: bold; cursor: pointer;" title="Click to change location">
+    Locating...
+  </span>
+  
+  <select id="saved-locations" title="Saved locations" style="display: none; padding: 8px; border-radius: 6px; border: 1px solid #ccc;">
+ 
+  </select>
+  
+  <button id="remove-location-btn"
+          style="display: none; background: #ff4c4c; border: none; color: white; border-radius: 6px; padding: 8px 12px; cursor: pointer;">
+    🗑
+  </button>
+</div>
+
+
+    <div id="search-area" style="text-align:center; margin-bottom:30px; display:none;">
+      <input type="text" id="location-search-input" placeholder="Enter city or place name" />
+      <button id="search-location-btn">Search</button>
+      <button id="cancel-search-btn" style="background:#444; margin-left:10px;">Cancel</button>
+      <div class="error" id="search-error"></div>
+    </div>
+
+    <h2>Current Weather</h2>
+    <div class="info-grid" id="current-info"></div>
+
+    <h2>7-Day Forecast</h2>
+    <div class="forecast" id="daily-forecast"></div>
+
+<h2>Forecast for:</h2><h3>Today</h3>
+    <div class="forecast" id="detail-forecast"><div id="sunrise-container" style="
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 20px 16px 20px 0; /* remove left padding */
+  border-radius: 20px;
+  background: rgba(75, 15, 90, 0.15);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  user-select: none;
+  font-family: 'Poppins', sans-serif;
+  color: #e5e5e5;
+  max-width: 320px;
+  margin: 30px auto;
+  border: 2px solid #8e4dff;
+  box-sizing: border-box;
+  height: 100px;
+  overflow: hidden;
+">
+
+  <!-- Sun Image, flush left -->
+  <img id="sun-img" 
+       src="https://royalbotics.github.io/cra/weather/sun-set-rise/sun.png" 
+       alt="Sun" 
+       style="
+         height: 80px;
+         width: auto;
+         border-radius: 50%;
+         user-select: none;
+         margin-left: -19px; /* tiny overlap so it touches border */
+         margin-right: 20px;
+       ">
+
+  <!-- Sunrise text -->
+  <div style="display: flex; flex-direction: column;">
+    <div style="font-size: 0.9rem; font-weight: 600; color: #c4a7e7; margin-bottom: -9px; margin-left: -13px;">Sunrise</div>
+    <div id="sunrise-time" style="font-size: 2rem; font-weight: 700; color: #f0eaff; margin-left: -23px;">-:-</div>
+<div style="display: flex; flex-direction: column; margin-left: 20px; align-items: center;">
+  <div id="sunrise-ampm" style="font-size: 0.9rem; font-weight: 600; color: #c4a7e7; margin-top: -6px;">AM</div>
+</div>
+
+  </div>
+
+</div>
+
+<div id="sunrise-container" style="
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 20px 16px 20px 0; /* remove left padding */
+  border-radius: 20px;
+  background: rgba(75, 15, 90, 0.15);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  user-select: none;
+  font-family: 'Poppins', sans-serif;
+  color: #e5e5e5;
+  max-width: 900px;
+  margin: 30px auto;
+  border: 2px solid #8e4dff;
+  box-sizing: border-box;
+  height: 100px;
+  overflow: hidden;
+">
+     <!-- Moon Image on the Left -->
+  <img 
+    id="moon-img"
+    src="" 
+    alt="Moon" 
+    style="
+      height: 80px;
+      width: auto;
+      border-radius: 50%;
+      user-select: none;
+      margin-left: 12px;
+      margin-right: 16px;
+      cursor: pointer;
+    "
+    title=""
+  
+
+  <!-- Sunset Text on the Right -->
+  <div style="text-align: right; flex: 1;">
+    <div style="font-size: 0.9rem; font-weight: 600; color: #c4a7e7; margin-bottom: -6px;">Sunset</div>
+    <div id="sunset-time" style="font-size: 2rem; font-weight: 700; color: #f0eaff;">-:-</div><div style="display: flex; flex-direction: column; margin-left: 20px; align-items: center;">
+
+  <div id="sunset-ampm" style="font-size: 0.9rem; font-weight: 600; color: #c4a7e7; margin-top: -6px;">PM</div>
+</div>
+
+  </div>
+</div>
+
+<script>
+  function getMoonPhaseIndex(date) {
+    const synodicMonth = 29.530588853;
+    const knownNewMoon = new Date(Date.UTC(2000, 0, 6, 18, 14, 0));
+    const diff = date.getTime() - knownNewMoon.getTime();
+    const daysSinceNew = diff / (1000 * 60 * 60 * 24);
+    const moonAge = daysSinceNew % synodicMonth;
+  
+    if (moonAge < 1.8457) return 0;          // New Moon
+    else if (moonAge < 5.53699) return 1;    // Waxing Crescent
+    else if (moonAge < 9.22831) return 2;    // First Quarter
+    else if (moonAge < 12.91963) return 3;   // Waxing Gibbous
+    else if (moonAge < 16.61096) return 4;   // Full Moon
+    else if (moonAge < 20.30228) return 5;   // Waning Gibbous
+    else if (moonAge < 23.99361) return 6;   // Last Quarter
+    else if (moonAge < 27.68493) return 7;   // Waning Crescent
+    else return 0;                           // New Moon
+  }
+
+  const moonPhaseImages = [
+    'new_moon.png',
+    'waxing_crescent.png',
+    'first_quarter.png',
+    'waxing_gibbous.png',
+    'full_moon.png',
+    'waning_gibbous.png',
+    'last_quarter.png',
+    'waning_crescent.png'
+  ];
+
+  const moonPhaseNames = [
+    'New Moon',
+    'Waxing Crescent',
+    'First Quarter',
+    'Waxing Gibbous',
+    'Full Moon',
+    'Waning Gibbous',
+    'Last Quarter',
+    'Waning Crescent'
+  ];
+
+  const today = new Date();
+  const phaseIndex = getMoonPhaseIndex(today);
+  const moonImg = document.getElementById('moon-img');
+  moonImg.src = `https://royalbotics.github.io/cra/weather/sun-set-rise/${moonPhaseImages[phaseIndex]}`;
+  moonImg.title = moonPhaseNames[phaseIndex];  // This sets the hover tooltip text
+</script>
+<script>function showTimeOnly(dateStr, elemId) {
+  const date = new Date(dateStr);
+  let hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  // Convert to 12-hour format without AM/PM
+  hours = hours % 12;
+  hours = hours ? hours : 12; // 0 becomes 12
+
+  const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+
+  document.getElementById(elemId).textContent = `${hours}:${minutesStr}`;
+}
+</script>
+</div>
+</div>
+</div>
+</div>
+<div id="cookie-notice" style="
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(8px);
+  color: #e5e5e5;
+  font-family: 'Poppins', sans-serif;
+  border: 1px solid #a100f2;
+  border-radius: 8px;
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 0 15px #a100f2aa;
+  z-index: 1000;
+  font-size: 0.95rem;
+  max-height: 80px;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+">
+  <div id="cookie-summary" style="flex: 1 1 300px; margin-right: 15px;">
+    This website uses nessesary cookies to ensure you get the best of our site. 
+    <a href="#" id="learn-more-link" style="color: #d183f7; text-decoration: underline; cursor: pointer;">Learn more</a>.
+  </div>
+
+  <button id="accept-cookies" style="
+    background: #a100f2;
+    border: none;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-left: auto;
+  ">Accept</button>
+
+  <div id="cookie-details" style="
+    width: 100%;
+    margin-top: 12px;
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    display: none;
+  ">
+    We use only nessesary cookies to save user content (Custom location, User costumization,..) if you enter,
+and we have a simple visitor counter that ensures no personal data wont be shared just your country whaere your from. We use the counter to count visitors on the site. We do not shaere your information with any other companies. Your info stays beetwen you and your screen.
+Transparancy comes first so you can see the stats board <a href="https://www.freevisitorcounters.com/en/home/stats/id/1372815">here<a>
+  </div>
+</div>
+
+<script>
+  const cookieNotice = document.getElementById('cookie-notice');
+  const acceptBtn = document.getElementById('accept-cookies');
+  const learnMoreLink = document.getElementById('learn-more-link');
+  const cookieDetails = document.getElementById('cookie-details');
+  const cookieSummary = document.getElementById('cookie-summary');
+
+  // Check if cookie accepted previously
+  if(localStorage.getItem('cookieAccepted') === 'true') {
+    cookieNotice.style.display = 'none';
+  }
+
+  acceptBtn.addEventListener('click', () => {
+    localStorage.setItem('cookieAccepted', 'true');
+    cookieNotice.style.display = 'none';
+  });
+
+  learnMoreLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    if(cookieDetails.style.display === 'none') {
+      cookieDetails.style.display = 'block';
+      cookieNotice.style.maxHeight = '250px';  // expand height
+      learnMoreLink.textContent = 'Show less';
+    } else {
+      cookieDetails.style.display = 'none';
+      cookieNotice.style.maxHeight = '80px';   // collapse height
+      learnMoreLink.textContent = 'Learn more';
+    }
+  });
+</script>
+
+  <footer>
+    &copy; 2025 Royal Botics. All Rights Reserved. | Ro&Bot™ <p>Weather version 3.0.2</p>
+   <style>.weather-link {
+  display: inline-block;
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+position: centre;
+  color: #007acc;
+  text-decoration: none;
+  border-bottom: 1px dashed #007acc;
+  padding: 2px 0;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}.weather-link:hover {
+  color: #005b99;
+  border-color: #005b99;}
+</style>
+<a href="https://royalbotics.github.io/weather/api" class="weather-link">
+  Get Ro&Bot™ free API access — add a simple weather forecast to your website
+</a>
+  <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=4ca1bc202b5d263808adbfc427e3aa2a37ebdbf3'></script>
+  </footer>
+
+<style>.forecast-day {
+  position: relative;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  border-radius: 24px;
+  border: 1.8px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.15),
+    inset 0 0 10px rgba(255, 255, 255, 0.1);
+  color: #f5f5f7;
+  padding: 20px 30px;
+  margin: 18px 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: box-shadow 0.3s ease, background 0.3s ease;
+  cursor: default;
+  user-select: none;
+  overflow: hidden;
+}
+
+/* Subtle gradient overlay for light refraction */
+.forecast-day::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -30%;
+  width: 160%;
+  height: 160%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255,255,255,0) 60%);
+  pointer-events: none;
+  border-radius: inherit;
+  filter: blur(25px);
+  z-index: 0;
+}
+
+/* Highlight "shine" line */
+.forecast-day::after {
+  content: "";
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255,255,255,0));
+  border-radius: 100px;
+  filter: blur(4px);
+  transform: rotate(20deg);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Ensure content above shine */
+.forecast-day > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Hover effect: stronger glow and light */
+.forecast-day:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow:
+    0 12px 45px rgba(255, 255, 255, 0.25),
+    inset 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Labels and values styling */
+.forecast-day .label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.forecast-day .value {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #e8e8ea;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+
+</style>
+  <script>
+const STORAGE_KEY = 'robot_saved_locations';
+
+function saveLocation(name, lat, lon) {
+  let locations = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  const exists = locations.some(l => l.name.toLowerCase() === name.toLowerCase() || (l.lat === lat && l.lon === lon));
+  if (!exists) {
+    locations.push({name, lat, lon});
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(locations));
+  }
+}
+
+function getSavedLocations() {
+  return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+}
+
+const savedSelect = document.getElementById('saved-locations');
+const removeBtn = document.getElementById('remove-location-btn');
+
+function updateRemoveButtonVisibility() {
+  const locations = getSavedLocations();
+  if(locations.length > 0) {
+    removeBtn.style.display = 'inline-block';
+  } else {
+    removeBtn.style.display = 'none';
+  }
+}
+
+function populateSavedLocationsDropdown() {
+  const locations = getSavedLocations();
+  if (locations.length === 0) {
+    savedSelect.style.display = 'none';
+    removeBtn.style.display = 'none';
+    return;
+  }
+  savedSelect.style.display = 'inline-block';
+  savedSelect.innerHTML = '<option value="">Select Saved Location</option>';
+  locations.forEach((loc, i) => {
+    savedSelect.innerHTML += `<option value="${i}">${loc.name}</option>`;
+  });
+  updateRemoveButtonVisibility();
+  removeBtn.disabled = true;
+}
+
 function showTimeOnly(dateStr, elemId) {
   if (!dateStr) return;
   const date = new Date(dateStr);
@@ -126,3 +776,347 @@ async function fetchWeatherByCoords(lat, lon, name) {
     console.error(err);
   }
 }
+
+async function detectLocation() {
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    const loc = await res.json();
+    if (loc.latitude && loc.longitude) {
+      fetchWeatherByCoords(loc.latitude, loc.longitude, `${loc.city}, ${loc.country_name}`);
+    } else {
+      throw new Error("Location unavailable");
+    }
+  } catch (e) {
+    document.getElementById('location-name').textContent = 'Unable to detect location.';
+  }
+}
+
+async function geocodeLocation(name) {
+  try {
+    document.getElementById('search-error').textContent = '';
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(name)}`;
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.length === 0) {
+      document.getElementById('search-error').textContent = 'Location not found.';
+      return null;
+    }
+    return {lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), display_name: data[0].display_name};
+  } catch {
+    document.getElementById('search-error').textContent = 'Error during geocoding.';
+    return null;
+  }
+}
+
+// UI elements
+const searchArea = document.getElementById('search-area');
+const searchInput = document.getElementById('location-search-input');
+const searchBtn = document.getElementById('search-location-btn');
+const cancelBtn = document.getElementById('cancel-search-btn');
+
+// Replacing change button with click on #location-name
+document.getElementById('location-name').onclick = () => {
+  searchArea.style.display = 'block';
+  savedSelect.style.display = 'inline-block';
+  removeBtn.style.display = getSavedLocations().length > 1 ? 'inline-block' : 'none';
+};
+
+cancelBtn.onclick = () => {
+  searchArea.style.display = 'none';
+  savedSelect.style.display = 'none';
+  removeBtn.style.display = 'none';
+  document.getElementById('search-error').textContent = '';
+  searchInput.value = '';
+  savedSelect.value = '';
+};
+
+searchBtn.onclick = async () => {
+  const query = searchInput.value.trim();
+  if (!query) {
+    document.getElementById('search-error').textContent = 'Please enter a location.';
+    return;
+  }
+  const result = await geocodeLocation(query);
+  if (result) {
+    fetchWeatherByCoords(result.lat, result.lon, result.display_name);
+    saveLocation(result.display_name, result.lat, result.lon);
+    populateSavedLocationsDropdown();
+    cancelBtn.onclick();
+  }
+};
+
+savedSelect.onchange = () => {
+  const idx = savedSelect.value;
+  if (idx === "") {
+    removeBtn.disabled = true;
+    return;
+  }
+  removeBtn.disabled = false;
+  const loc = getSavedLocations()[idx];
+  if (loc) {
+    fetchWeatherByCoords(loc.lat, loc.lon, loc.name);
+  }
+};
+
+removeBtn.onclick = () => {
+  const idx = savedSelect.value;
+  if (idx === "") return;
+  let locations = getSavedLocations();
+  locations.splice(idx, 1);
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(locations));
+  populateSavedLocationsDropdown();
+  removeBtn.disabled = true;
+  savedSelect.value = '';
+  if (locations.length > 0) {
+    fetchWeatherByCoords(locations[0].lat, locations[0].lon, locations[0].name);
+  } else {
+    detectLocation();
+  }
+};
+
+window.onload = () => {
+  populateSavedLocationsDropdown();
+  const saved = getSavedLocations();
+  if (saved.length > 0) {
+    fetchWeatherByCoords(saved[0].lat, saved[0].lon, saved[0].name);
+  } else {
+    detectLocation();
+  }
+};
+
+function setWeatherBackground(weatherCode) {
+  const bg = document.getElementById('weather-background');
+  let imageUrl = '';
+
+  switch (weatherCode) {
+    case 0: imageUrl = 'https://royalbotics.github.io/cra/weather/clear-sky.png'; break;
+    case 1:
+    case 2:
+    case 3: imageUrl = 'https://royalbotics.github.io/cra/weather/cloudy.png'; break;
+    case 45:
+    case 48: imageUrl = 'https://royalbotics.github.io/cra/weather/partly-cloudy.png'; break;
+    case 51:
+    case 53:
+    case 55: imageUrl = 'https://royalbotics.github.io/cra/weather/drizzle.png'; break;
+    case 61:
+    case 63:
+    case 65: imageUrl = 'https://royalbotics.github.io/cra/weather/rain.png'; break;
+    case 71:
+    case 73:
+    case 75: imageUrl = 'https://royalbotics.github.io/cra/weather/snow.png'; break;
+    case 95:
+    case 96:
+    case 99: imageUrl = 'https://royalbotics.github.io/cra/weather/thunderstorm.png'; break;
+    default: imageUrl = 'https://royalbotics.github.io/cra/weather/weather-img.webp';
+  }
+
+  bg.style.backgroundImage = `url('${imageUrl}')`;
+}
+
+const weatherCodeMap = {
+  0: "Clear sky",
+  1: "Mainly clear",
+  2: "Partly cloudy",
+  3: "Overcast",
+  45: "Fog",
+  48: "Depositing rime fog",
+  51: "Light drizzle",
+  53: "Moderate drizzle",
+  55: "Dense drizzle",
+  56: "Light freezing drizzle",
+  57: "Dense freezing drizzle",
+  61: "Slight rain",
+  63: "Moderate rain",
+  65: "Heavy rain",
+  66: "Light freezing rain",
+  67: "Heavy freezing rain",
+  71: "Slight snow fall",
+  73: "Moderate snow fall",
+  75: "Heavy snow fall",
+  77: "Snow grains",
+  80: "Slight rain showers",
+  81: "Moderate rain showers",
+  82: "Violent rain showers",
+  85: "Slight snow showers",
+  86: "Heavy snow showers",
+  95: "Thunderstorm",
+  96: "Thunderstorm with slight hail",
+  99: "Thunderstorm with heavy hail"
+};
+
+// Smooth scrolling section
+(() => {
+  let targetScroll = 0;
+  let currentScroll = 0;
+  const ease = 0.1;
+  let startY = 0;
+  let touchStartScroll = 0;
+
+  document.body.style.overflow = 'hidden';
+  targetScroll = window.scrollY;
+
+  window.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    targetScroll += e.deltaY;
+    clampTarget();
+  }, { passive: false });
+
+  window.addEventListener('touchstart', (e) => {
+    startY = e.touches[0].clientY;
+    touchStartScroll = targetScroll;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    const touchY = e.touches[0].clientY;
+    const deltaY = startY - touchY;
+    targetScroll = touchStartScroll + deltaY;
+    clampTarget();
+    e.preventDefault();
+  }, { passive: false });
+
+  function clampTarget() {
+    targetScroll = Math.max(0, Math.min(
+      targetScroll,
+      document.body.scrollHeight - window.innerHeight
+    ));
+  }
+
+  function smoothScroll() {
+    currentScroll += (targetScroll - currentScroll) * ease;
+    window.scrollTo(0, currentScroll);
+    requestAnimationFrame(smoothScroll);
+  }
+
+  smoothScroll();
+})();
+// Premium glassy popup creator
+function createPremiumGlassyPopup(message, buttonText = 'Got it') {
+  const popup = document.createElement('div');
+  popup.style.position = 'fixed';
+  popup.style.top = '50%';
+  popup.style.left = '50%';
+  popup.style.transform = 'translate(-50%, -50%)';
+  popup.style.width = '380px';
+  popup.style.padding = '30px 45px';
+  popup.style.background = 'linear-gradient(145deg, rgba(50, 0, 70, 0.6), rgba(80, 0, 130, 0.4))';
+  popup.style.backdropFilter = 'blur(50px) saturate(220%) contrast(140%)';
+  popup.style.WebkitBackdropFilter = 'blur(39px) saturate(220%) contrast(159%)';
+  popup.style.borderRadius = '36px';
+  popup.style.border = '2px solid rgba(200, 180, 255, 0.25)';
+  
+  popup.style.color = 'rgba(230, 220, 255, 0.95)';
+  popup.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+  popup.style.fontSize = '1.3rem';
+  popup.style.textAlign = 'center';
+  popup.style.cursor = 'default';
+  popup.style.userSelect = 'none';
+  popup.style.zIndex = '10000';
+  popup.style.transition = 'transform 0.4s ease, box-shadow 0.4s ease';
+  popup.style.animation = 'fadeInScale 0.5s ease forwards';
+
+  popup.textContent = message;
+
+  const btn = document.createElement('button');
+  btn.textContent = buttonText;
+  btn.style.marginTop = '28px';
+  btn.style.padding = '14px 36px';
+  btn.style.border = 'none';
+  btn.style.borderRadius = '22px';
+  btn.style.background = 'linear-gradient(135deg, #b17aff, #5c0099)';
+  btn.style.color = 'rgba(245, 240, 255, 0.95)';
+  btn.style.fontWeight = '700';
+  btn.style.fontSize = '1.1rem';
+  btn.style.cursor = 'pointer';
+
+  btn.style.transition = 'background 0.3s ease, box-shadow 0.3s ease';
+  btn.style.userSelect = 'none';
+  btn.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+
+  btn.onmouseenter = () => {
+    btn.style.background = 'linear-gradient(135deg, #d2a8ff, #7a00ff)';
+    btn.style.boxShadow = `
+      0 7px 22px rgba(210, 160, 255, 0.9),
+      inset 0 -5px 12px rgba(230, 190, 255, 1)
+    `;
+  };
+  btn.onmouseleave = () => {
+    btn.style.background = 'linear-gradient(135deg, #b17aff, #5c0099)';
+    btn.style.boxShadow = `
+      0 5px 15px rgba(180, 120, 255, 0.7),
+      inset 0 -3px 8px rgba(200, 150, 255, 0.9)
+    `;
+  };
+
+  popup.appendChild(document.createElement('br'));
+  popup.appendChild(btn);
+
+  // Add fadeInScale keyframe animation once
+  if (!document.getElementById('fadeInScaleAnimation')) {
+    const style = document.createElement('style');
+    style.id = 'fadeInScaleAnimation';
+    style.textContent = `
+      @keyframes fadeInScale {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.85);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  return { popup, btn };
+}
+
+// Show the Welcome Location Hint popup
+function showWelcomeLocationHint(onClose) {
+  if (localStorage.getItem('welcomeLocationHintShown')) {
+    onClose();
+    return;
+  }
+  localStorage.setItem('welcomeLocationHintShown', 'true');
+
+  const message = "Click on the location name above to change location.";
+  const { popup, btn } = createPremiumGlassyPopup(message);
+
+  btn.onclick = () => {
+    document.body.removeChild(popup);
+    onClose();
+  };
+
+  document.body.appendChild(popup);
+}
+
+// Show the Expert Mode Hint popup
+function showExpertModeHint() {
+  if (localStorage.getItem('expertModeHintShown')) return;
+  localStorage.setItem('expertModeHintShown', 'true');
+
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+  const message = isMobile
+    ? "Hold the screen for 5 seconds to enter Expert Mode."
+    : "Right-click anywhere on the screen to enter Expert Mode.";
+
+  const { popup, btn } = createPremiumGlassyPopup(message, 'Understood');
+
+  btn.onclick = () => {
+    document.body.removeChild(popup);
+  };
+
+  document.body.appendChild(popup);
+}
+
+// Start the flow: show welcome, then expert hint
+showWelcomeLocationHint(() => {
+  showExpertModeHint();
+});
+
+</script>
+
+
+</body>
+</html>
