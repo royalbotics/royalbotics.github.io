@@ -154,7 +154,8 @@
     }
 
     .forecast-day {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.03);
+      opacity: 0.9;
       border: 1px solid #a100f222;
       border-radius: 8px;
       padding: 15px 10px;
@@ -176,6 +177,7 @@
       font-weight: 700;
       color: #a100f2;
       margin-bottom: 6px;
+opacity: 0.9;
     }
 
     footer {
@@ -245,6 +247,10 @@ a, button, [role="button"], .clickable {
 
     <h2>7-Day Forecast</h2>
     <div class="forecast" id="daily-forecast"></div>
+
+<h2>Sun Rise - Sun Set</h2>
+    <div class="forecast" id="rise-set"></div>
+
   </div>
 
 
@@ -272,7 +278,7 @@ a, button, [role="button"], .clickable {
   transition: max-height 0.4s ease;
 ">
   <div id="cookie-summary" style="flex: 1 1 300px; margin-right: 15px;">
-    This website has a bug after last update please come back later, we are working on fixing it
+    This website uses nessesary cookies to ensure you get the best of our site. 
     <a href="#" id="learn-more-link" style="color: #d183f7; text-decoration: underline; cursor: pointer;">Learn more</a>.
   </div>
 
@@ -286,7 +292,7 @@ a, button, [role="button"], .clickable {
     cursor: pointer;
     transition: background 0.3s;
     margin-left: auto;
-  ">OK</button>
+  ">Accept</button>
 
   <div id="cookie-details" style="
     width: 100%;
@@ -728,46 +734,53 @@ const weatherCodeMap = {
   let targetScroll = 0;
   let currentScroll = 0;
   const ease = 0.1;
+  let startY = 0;
+  let touchStartScroll = 0;
 
-  // Variables for touch events
-  let touchStartY = 0;
-  let isTouching = false;
+  // Ensure the body is not scrollable by default
+  document.body.style.overflow = 'hidden';
 
-  // Update targetScroll on wheel scroll (for desktops)
+  // Set initial scroll position
+  targetScroll = window.scrollY;
+
+  // Handle mouse wheel scroll (desktop)
   window.addEventListener('wheel', (e) => {
     e.preventDefault();
     targetScroll += e.deltaY;
-    targetScroll = Math.max(0, Math.min(targetScroll, document.body.scrollHeight - window.innerHeight));
+    clampTarget();
   }, { passive: false });
 
-  // Handle touch events for mobile devices
+  // Handle touch start (mobile)
   window.addEventListener('touchstart', (e) => {
-    // If more than one finger, don't interfere
-    if (e.touches.length > 1) return;
-    isTouching = true;
-    touchStartY = e.touches[0].clientY;
+    startY = e.touches[0].clientY;
+    touchStartScroll = targetScroll;
   }, { passive: true });
 
+  // Handle touch move (mobile)
   window.addEventListener('touchmove', (e) => {
-    if (!isTouching || e.touches.length > 1) return;
-
     const touchY = e.touches[0].clientY;
-    const deltaY = touchY - touchStartY;
-    touchStartY = touchY;
+    const deltaY = startY - touchY;
+    targetScroll = touchStartScroll + deltaY;
+    clampTarget();
+    e.preventDefault(); // prevent native scroll
+  }, { passive: false });
 
-    // Invert deltaY for scrolling direction
-    targetScroll -= deltaY;
+  function clampTarget() {
+    targetScroll = Math.max(0, Math.min(
+      targetScroll,
+      document.body.scrollHeight - window.innerHeight
+    ));
+  }
 
-    // Clamp the targetScroll to prevent scrolling past the content
-    targetScroll = Math.max(0, Math.min(targetScroll, document.body.scrollHeight - window.innerHeight));
-  }, { passive: true });
+  function smoothScroll() {
+    currentScroll += (targetScroll - currentScroll) * ease;
+    window.scrollTo(0, currentScroll);
+    requestAnimationFrame(smoothScroll);
+  }
 
-  window.addEventListener('touchend', () => {
-    isTouching = false;
-  }, { passive: true });
+  smoothScroll();
+})();
 
-  
-    
   </script>
 
 </body>
