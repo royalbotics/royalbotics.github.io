@@ -1,20 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Ro&Bot Royal Botics - Innovating the Future of Robotics with Advanced AI and Next-Gen Technology. Powered by the I1 Chip.">
-    <meta name="keywords" content="robotics, AI, automation, I1 Chip, technology, future, cyberpunk, home robotics">
-    <meta name="author" content="Royal Botics">
-    <meta property="og:title" content="Royal Botics – Technology that sets you free.">
-
-<meta property="og:image" content="https://royalboticsgithubio/favicon.png/">
-<meta property="og:url" content="https://royalbotics.github.io">
-
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Ro&Bot Royal Botics - Innovating the Future of Robotics with Advanced Technology and Visualization Hardware." />
+    <meta name="keywords" content="robotics, AI, automation, GPU, visualization, technology, cyberpunk, home robotics" />
+    <meta name="author" content="Royal Botics" />
+    <meta property="og:title" content="Royal Botics – Technology that sets you free." />
+    <meta property="og:image" content="https://royalboticsgithubio/favicon.png/" />
+    <meta property="og:url" content="https://royalbotics.github.io" />
     <meta name="google-site-verification" content="VmybbKUuP3ZV8fy8KbNTEyZj3ls86OImI78jg67ChHg" />
-    <title>Royal Botics – Technology that sets you free.</title>
-<link rel="icon" href="/favicon.png" type="image/png">
-    <!-- Lucide Icons CDN -->
+    <title>Ro&Bot™ – Technology that sets you free.</title>
+    <link rel="icon" href="/favicon.png" type="image/png" />
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
@@ -107,20 +104,6 @@
             animation: fadeInUp 1.2s forwards;
         }
 
-        .logo img {
-            width: 180px;
-            height: auto;
-            margin-bottom: 30px;
-            filter: drop-shadow(0px 0px 15px #a100f2);
-            mix-blend-mode: screen;
-            border-radius: 15px;
-            transition: transform 0.4s ease-in-out;
-        }
-
-        .logo img:hover {
-            transform: scale(1.1);
-        }
-
         @keyframes fadeInUp {
             to {
                 opacity: 1;
@@ -159,15 +142,6 @@
             transform: scale(1.05);
         }
 
-        .cta:focus {
-            outline: none;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Brief Section with Icons */
         .brief-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -206,6 +180,39 @@
             color: #d0d0d0;
         }
 
+        /* Google Translate Widget fixes */
+        #google_translate_wrapper {
+            overflow: hidden;
+            display: inline-block;
+            padding: 2px;
+            margin-top: 10px;
+        }
+
+        #google_translate_element,
+        #google_translate_element * {
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+            text-decoration: none !important;
+            background: transparent !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        #google_translate_element iframe {
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            display: block;
+            width: 100% !important;
+            height: auto !important;
+        }
+
+        #google_translate_element {
+            height: 40px;
+            line-height: 40px;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -217,75 +224,59 @@
 
     <div class="sidebar" id="sidebar">
         <a href="shop.html">Shop</a>
-        <a href="mission.html">Our mission</a>
+        <a href="mission.html">Our Mission</a>
         <a href="samanthai.html">SamanthAI</a>
         <a href="tof.html">Terms of Service</a>
-        <a href="research.html">Research Databse</a>
+        <a href="research.html">Research Database</a>
     </div>
 
     <div class="container">
-        <div class="logo">
-            <img src="https://i.ibb.co/GKQHQ3h/craiyon-174928-transparent.png" alt="Ro&Bot Royal Botics Logo">
-        </div>
-        <div class="header">Royal Botics</div>
+        <div class="header">Ro&Bot™</div>
         <div class="subtitle">Innovating the Future of Robotics</div>
         <button class="cta" onclick="scrollToContent()">Discover More</button>
     </div>
 
-    <!-- Brief Section with Icons -->
     <section class="brief-grid">
         <div class="brief-item">
-            <i data-lucide="home" class="icon"></i>
+            <i data-lucide="home"></i>
             <h3>Smarter Living</h3>
-            <p>
-                We design robotics that adapt to your lifestyle — intelligently automating your home with precision, personality, and ease.
-            </p>
+            <p>Our robotics adapt to your lifestyle — intelligently automating your home with precision, personality, and ease.</p>
         </div>
 
         <div class="brief-item">
-            <i data-lucide="bot" class="icon"></i>
+            <i data-lucide="bot"></i>
             <h3>Human-Like Robotics</h3>
-            <p>
-                Our AI companions don’t just follow commands — they learn, evolve, and respond naturally to human behavior and emotion.
-            </p>
+            <p>AI companions that don’t just follow commands — they learn, evolve, and respond naturally to human behavior.</p>
         </div>
 
         <div class="brief-item">
-            <i data-lucide="cpu" class="icon"></i>
-            <h3>Powered by the I1 Chip</h3>
-            <p>
-                The I1 Chip provides real-time learning, advanced AI, and efficient power management, enabling robots to adapt and perform optimally in any environment.
-            </p>
-        </div>
-
-        <div class="brief-item">
-            <i data-lucide="shield" class="icon"></i>
+            <i data-lucide="shield"></i>
             <h3>Enhanced Security</h3>
-            <p>
-                With cutting-edge sensors and AI, our robots monitor your home, providing real-time alerts, ensuring a safer living space for your loved ones.
-            </p>
+            <p>Equipped with advanced sensors and AI-driven alerts, our robots keep your home safe and secure 24/7.</p>
         </div>
-        
-        <div class="brief-item">
-            <i data-lucide="alert" class="icon"></i>
-            <h3>RED ALERT</h3>
-            <p>
-               An red alert was issued read <a herf=redalert.pdf>more</a> about this alert.
-            </p>
-            <button herf=redalert.pdf>More Information</button>
+
+        <div class="brief-item" onclick="window.location.href='/research/RBdisplay'" style="cursor: pointer;">
+            <i data-lucide="monitor"></i>
+            <h3>RBdisplay</h3>
+            <p>High-performance GPU engineered exclusively for visualization tasks. Not optimized for AI or robotics workloads.</p>
         </div>
     </section>
-<lang>
-<div id="google_translate_element"></div>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script><script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-}
-</script>
-</lang>
-    <footer style="background: #222; color: #fff; padding: 20px 0; text-align: center;">
-    <p>&copy; 2025 Ro&Bot Royal Botics. All Rights Reserved.</p>
+
+  <footer style="background: #222; color: #fff; padding: 20px 0; text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap;">
+    <p style="margin: 0;">&copy; 2025 Ro&Bot™. All Rights Reserved.</p>
+    <div id="google_translate_wrapper" style="display: inline-block;">
+        <div id="google_translate_element"></div>
+    </div>
+
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+            }
+        </script>
 </footer>
+
+ 
 
     <script>
         function toggleMenu() {
@@ -297,7 +288,6 @@ function googleTranslateElementInit() {
             window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
         }
 
-        // Initialize Lucide icons
         lucide.createIcons();
     </script>
 </body>
