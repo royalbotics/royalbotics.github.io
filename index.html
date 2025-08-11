@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+  <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Ro&Bot™: The future of home automation. Simply powerful technology that sets you free to live." />
     <meta name="keywords" content="robotics, Ro&Bot, Ro&Bot™, ro&bot™, ro&bot, Ro7Bot, AI, automation, GPU, visualization, technology, cyberpunk, home robotics" />
@@ -14,281 +14,599 @@
     <link rel="icon" href="/favicon.png" type="image/png" />
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@600&display=swap');
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Poppins:wght@600&display=swap');
 
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #000000, #3b0056);
-            color: #e5e5e5;
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-            text-align: center;
-        }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #000000, #3b0056);
+      color: #e5e5e5;
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      min-height: 200vh;
+    }
 
-        .menu {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            cursor: pointer;
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
+    /* MENU */
+    .menu {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      cursor: pointer;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-        .menu div {
-            width: 45px;
-            height: 5px;
-            background: #e5e5e5;
-            transition: 0.3s;
-            border-radius: 3px;
-        }
+    .menu div {
+      width: 45px;
+      height: 5px;
+      background: #e5e5e5;
+      transition: 0.3s;
+      border-radius: 3px;
+    }
 
-        .menu.open div:nth-child(1) {
-            transform: rotate(-45deg) translate(-5px, 6px);
-        }
+    .menu.open div:nth-child(1) {
+      transform: rotate(-45deg) translate(-5px, 6px);
+    }
 
-        .menu.open div:nth-child(2) {
-            opacity: 0;
-        }
+    .menu.open div:nth-child(2) {
+      opacity: 0;
+    }
 
-        .menu.open div:nth-child(3) {
-            transform: rotate(45deg) translate(-5px, -6px);
-        }
+    .menu.open div:nth-child(3) {
+      transform: rotate(45deg) translate(-5px, -6px);
+    }
 
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -280px;
-            width: 260px;
-            height: 100vh;
-            background: rgba(161, 0, 242, 0.1);
-            backdrop-filter: blur(10px);
-            box-shadow: 4px 0px 30px rgba(161, 0, 242, 0.5);
-            transition: left 0.4s ease-in-out;
-            padding-top: 100px;
-            z-index: 199;
-            overflow: hidden;
-        }
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -280px;
+      width: 260px;
+      height: 100vh;
+      background: rgba(161, 0, 242, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 4px 0px 30px rgba(161, 0, 242, 0.5);
+      transition: left 0.4s ease-in-out;
+      padding-top: 100px;
+      z-index: 199;
+      overflow: hidden;
+    }
 
-        .sidebar a {
-            display: block;
-            color: #e5e5e5;
-            text-decoration: none;
-            padding: 18px 20px;
-            font-size: 1.4rem;
-            text-align: left;
-            transition: 0.3s;
-            font-weight: 500;
-        }
+    .sidebar a {
+      display: block;
+      color: #e5e5e5;
+      text-decoration: none;
+      padding: 18px 20px;
+      font-size: 1.4rem;
+      text-align: left;
+      transition: 0.3s;
+      font-weight: 500;
+    }
 
-        .sidebar a:hover {
-            background: rgba(161, 0, 242, 0.3);
-            transform: translateX(10px);
-        }
+    .sidebar a:hover {
+      background: rgba(161, 0, 242, 0.3);
+      transform: translateX(10px);
+    }
 
-        .sidebar.open {
-            left: 0;
-        }
+    .sidebar.open {
+      left: 0;
+    }
 
-        .container {
-            padding: 50px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transform: translateY(50px);
-            animation: fadeInUp 1.2s forwards;
-        }
+    /* HERO */
+    .container.hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      overflow: visible;
+      padding: 0 20px;
+      position: relative;
+      user-select: none;
+      text-align: center;
+    }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .header {
+      font-size: 4rem;
+      font-weight: 700;
+      margin: 0;
+      color: #fff;
+      z-index: 10;
+      user-select: text;
+    }
 
-        .header {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #fff;
-            letter-spacing: 2px;
-        }
+    .subtitle.tagline {
+      font-size: 1.6rem;
+      color: #b0b0b0;
+      margin-top: 10px;
+      transform-origin: center top;
+      will-change: transform;
+      user-select: text;
+      z-index: 10;
+      transition: color 0.25s ease, transform 0.25s ease;
+    }
 
-        .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 40px;
-            color: #b0b0b0;
-        }
+    /* BRIEF GRID */
+    .brief-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 900px;
+      margin: 60px auto 100px;
+      padding: 0 20px;
+    }
 
-        .cta {
-            padding: 18px 40px;
-            font-size: 1.1rem;
-            background: #a100f2;
-            color: #000;
-            border: none;
-            cursor: pointer;
-            border-radius: 30px;
-            transition: 0.3s;
-            font-weight: 500;
-        }
+    .brief-item {
+      background: rgba(161, 0, 242, 0.1);
+      backdrop-filter: blur(5px);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(161, 0, 242, 0.3);
+      transition: 0.3s;
+      cursor: default;
+      user-select: text;
+    }
 
-        .cta:hover {
-            background: #7200b8;
-            transform: scale(1.05);
-        }
+    .brief-item:hover {
+      box-shadow: 0 6px 20px rgba(161, 0, 242, 0.5);
+    }
 
-        .brief-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            max-width: 900px;
-            margin: 60px auto 100px;
-            padding: 0 20px;
-        }
+    .brief-item i {
+      font-size: 2.5rem;
+      color: #a100f2;
+      margin-bottom: 15px;
+    }
 
-        .brief-item {
-            background: rgba(161, 0, 242, 0.1);
-            backdrop-filter: blur(5px);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(161, 0, 242, 0.3);
-            transition: 0.3s;
-        }
+    .brief-item h3 {
+      font-size: 1.7rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
 
-        .brief-item:hover {
-            box-shadow: 0 6px 20px rgba(161, 0, 242, 0.5);
-        }
+    .brief-item p {
+      color: #d0d0d0;
+    }
 
-        .brief-item i {
-            font-size: 2.5rem;
-            color: #a100f2;
-            margin-bottom: 15px;
-        }
+    /* clickable RBdisplay */
+    .brief-item.clickable {
+      cursor: pointer;
+    }
 
-        .brief-item h3 {
-            font-size: 1.7rem;
-            color: #fff;
-            margin-bottom: 10px;
-        }
+    /* ABOUT / DESCRIPTION section */
+    .about-section {
+      max-width: 800px;
+      margin: 0 auto 80px;
+      padding: 0 20px;
+      color: #ccc;
+      font-size: 1.25rem;
+      line-height: 1.6;
+      user-select: text;
+      text-align: center;
+    }
 
-        .brief-item p {
-            color: #d0d0d0;
-        }
+    .about-section p {
+      margin: 0.8em 0;
+      transition: all 0.25s ease;
+      cursor: default;
+    }
 
-        /* Google Translate Widget fixes */
-        #google_translate_wrapper {
-            overflow: hidden;
-            display: inline-block;
-            padding: 2px;
-            margin-top: 10px;
-        }
+    .about-section p span {
+      display: inline-block;
+      font-size: 1.25rem;
+      color: #bbb;
+      transition: all 0.25s ease;
+      user-select: text;
+      will-change: transform, color;
+    }
 
-        #google_translate_element,
-        #google_translate_element * {
-            border: none !important;
-            outline: none !important;
-            box-shadow: none !important;
-            text-decoration: none !important;
-            background: transparent !important;
-            margin: 0 !important;
-            padding: 0 !important;
-        }
+    .about-section p.active span {
+      font-size: 1.8rem;
+      color: white;
+      font-weight: 600;
+      transform: translateY(-3px);
+    }
 
-        #google_translate_element iframe {
-            border: none !important;
-            box-shadow: none !important;
-            outline: none !important;
-            display: block;
-            width: 100% !important;
-            height: auto !important;
-        }
+    .about-section p.inactive span {
+      font-size: 1rem;
+      color: #666;
+      opacity: 0.5;
+      transform: scale(0.96);
+    }
 
-        #google_translate_element {
-            height: 40px;
-            line-height: 40px;
-            overflow: hidden;
-        }
-    </style>
+    /* FOOTER */
+    footer {
+      background: #222;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    /* Google Translate Widget fixes */
+    #google_translate_wrapper {
+      overflow: hidden;
+      display: inline-block;
+      padding: 2px;
+      margin-top: 10px;
+    }
+
+    #google_translate_element,
+    #google_translate_element * {
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+      text-decoration: none !important;
+      background: transparent !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    #google_translate_element iframe {
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+      display: block;
+      width: 100% !important;
+      height: auto !important;
+    }
+
+    #google_translate_element {
+      height: 40px;
+      line-height: 40px;
+      overflow: hidden;
+    }
+
+    /* small helper to make scrolling feel a touch smoother while snapping */
+    html.snapping, body.snapping {
+      scroll-behavior: auto !important;
+    }
+  </style>
 </head>
 <body>
-    <div class="menu" onclick="toggleMenu()">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+  <!-- Navigation Menu -->
+  <div class="menu" onclick="toggleMenu()">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 
-    <div class="sidebar" id="sidebar">
-        <a href="shop.html">Shop</a>
-        <a href="mission.html">Our Mission</a>
-        <a href="samanthai.html">SamanthAI</a>
-        <a href="tof.html">Terms of Service</a>
-        <a href="research.html">Research Database</a>
-    </div>
+  <div class="sidebar" id="sidebar">
+    <a href="shop.html">Shop</a>
+    <a href="mission.html">Our Mission</a>
+    <a href="samanthai.html">SamanthAI</a>
+    <a href="tof.html">Terms of Service</a>
+    <a href="research.html">Research Database</a>
+  </div>
 
-    <div class="container">
-        <div class="header">Ro&Bot™</div>
-        <div class="subtitle">Innovating the Future of Robotics</div>
-        <button class="cta" onclick="scrollToContent()">Discover More</button>
-    </div>
-
-    <section class="brief-grid">
+  <!-- Hero Section -->
+  <div class="container hero" id="hero">
+    <h1 class="header">Ro&Bot™</h1>
+    <p class="subtitle tagline" id="tagline">Technology that sets you free.</p>
+  </div>
+  
+ <section class="brief-grid">
         <div class="brief-item">
-            <i data-lucide="home"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="home" class="lucide lucide-home"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
             <h3>Smarter Living</h3>
             <p>Our robotics adapt to your lifestyle — intelligently automating your home with precision, personality, and ease.</p>
         </div>
 
         <div class="brief-item">
-            <i data-lucide="bot"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bot" class="lucide lucide-bot"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
             <h3>Human-Like Robotics</h3>
             <p>AI companions that don’t just follow commands — they learn, evolve, and respond naturally to human behavior.</p>
         </div>
 
         <div class="brief-item">
-            <i data-lucide="shield"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield" class="lucide lucide-shield"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path></svg>
             <h3>Enhanced Security</h3>
             <p>Equipped with advanced sensors and AI-driven alerts, our robots keep your home safe and secure 24/7.</p>
         </div>
 
         <div class="brief-item" onclick="window.location.href='/research/RBdisplay'" style="cursor: pointer;">
-            <i data-lucide="monitor"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="monitor" class="lucide lucide-monitor"><rect width="20" height="14" x="2" y="3" rx="2"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg>
             <h3>RBdisplay</h3>
             <p>High-performance GPU engineered exclusively for visualization tasks. Not optimized for AI or robotics workloads.</p>
         </div>
     </section>
 
-  <footer style="background: #222; color: #fff; padding: 20px 0; text-align: center; display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap;">
-    <p style="margin: 0;">&copy; 2025 Ro&Bot™. All Rights Reserved.</p>
-    <div id="google_translate_wrapper" style="display: inline-block;">
-        <div id="google_translate_element"></div>
+<!-- About / Brand Description -->
+  <section class="about-section" id="aboutSection">
+    <p><span>At Ro&Bot™, we believe technology should liberate, not complicate.</span></p>
+    <p><span>That’s why we design intelligent, elegant devices that seamlessly enhance your life.</span></p>
+    <p><span>Our Alma system, powered by the intuitive SamanthAI, delivers effortless home automation with unmatched precision and style.</span></p>
+    <p><span>Every detail is crafted for simplicity, performance, and lasting quality.</span></p>
+    <p><span>Because true innovation is about freeing your time and empowering your choices.</span></p>
+    <p><span>Ro&Bot™ — Technology that sets you free.</span></p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Ro&Bot™. All rights reserved.</p>
+    <div id="google_translate_wrapper">
+      <div id="google_translate_element"></div>
     </div>
+  </footer>
 
-        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-        <script type="text/javascript">
-            function googleTranslateElementInit() {
-                new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-            }
-        </script>
-</footer>
+  <script>
+    // --- Basic UI setup ---
+    window.addEventListener('load', () => {
+      if (window.lucide) window.lucide.replace();
+    });
 
- 
+    function toggleMenu() {
+      document.querySelector('.menu').classList.toggle('open');
+      document.getElementById('sidebar').classList.toggle('open');
+    }
 
-    <script>
-        function toggleMenu() {
-            document.getElementById("sidebar").classList.toggle("open");
-            document.querySelector(".menu").classList.toggle("open");
+    // --- Tagline scaling (restored) ---
+    const tagline = document.getElementById('tagline');
+    // Scale tagline smoothly based on scroll (like previous version). You can tweak scaleMin/Max.
+    const scaleMin = 1;
+    const scaleMax = 2.2; // smaller max so it doesn't explode visually while snapping
+    function updateTaglineScale() {
+      // compute progress based on how far we've scrolled through hero section
+      const heroHeight = window.innerHeight;
+      const scrollIntoHero = Math.min(Math.max(window.scrollY, 0), heroHeight);
+      const progress = scrollIntoHero / (heroHeight * 0.6); // 60% of hero height influence
+      const scale = scaleMin + Math.min(Math.max(progress, 0), 1) * (scaleMax - scaleMin);
+      tagline.style.transform = `scale(${scale})`;
+      // optionally change color slightly as it scales
+      if (progress > 0.4) {
+        tagline.style.color = '#fff';
+      } else {
+        tagline.style.color = '#b0b0b0';
+      }
+    }
+    window.addEventListener('scroll', updateTaglineScale, { passive: true });
+    window.addEventListener('resize', updateTaglineScale);
+    updateTaglineScale();
+
+    // --- Snap-through-about-section logic ---
+    (function() {
+      const about = document.getElementById('aboutSection');
+      const lines = Array.from(about.querySelectorAll('p'));
+      let lineCenters = []; // center positions of each line relative to about top (computed)
+      let aboutRect = null;
+      let lineZone = 0; // pixel vertical spacing used to snap
+      let snapping = false;
+      let animating = false;
+      let currentIndex = 0;
+
+      // touch support
+      let touchStartY = null;
+      let touchMoved = false;
+
+      function recompute() {
+        aboutRect = about.getBoundingClientRect();
+        const aboutTopPage = about.offsetTop;
+        // compute approximate zone based on each p height (use bounding rects)
+        lineCenters = lines.map((line, i) => {
+          const r = line.getBoundingClientRect();
+          // use line's offsetTop relative to about
+          return line.offsetTop + line.offsetHeight / 2;
+        });
+        // line zone is average distance between successive centers (or height of first)
+        if (lineCenters.length > 1) {
+          const diffs = [];
+          for (let i = 1; i < lineCenters.length; i++) diffs.push(lineCenters[i] - lineCenters[i-1]);
+          lineZone = Math.round(diffs.reduce((a,b)=>a+b,0)/diffs.length) || lines[0].offsetHeight + 16;
+        } else {
+          lineZone = lines[0].offsetHeight + 16;
+        }
+      }
+
+      // compute index closest to viewport center
+      function indexForViewportCenter() {
+        const viewportCenterY = window.scrollY + window.innerHeight / 2;
+        const relativeCenter = viewportCenterY - about.offsetTop;
+        let closest = 0;
+        let best = Infinity;
+        lineCenters.forEach((c, i) => {
+          const d = Math.abs(relativeCenter - c);
+          if (d < best) { best = d; closest = i; }
+        });
+        return closest;
+      }
+
+      function snapToIndex(idx) {
+        idx = Math.max(0, Math.min(lines.length - 1, idx));
+        currentIndex = idx;
+        const target = about.offsetTop + lineCenters[idx] - window.innerHeight / 2;
+        animating = true;
+        // disable smooth behavior in CSS during manual snapping to avoid double-behavior
+        document.documentElement.classList.add('snapping');
+        window.scrollTo({ top: Math.round(target), behavior: 'smooth' });
+        // wait a bit for the smooth scroll to complete
+        setTimeout(() => {
+          animating = false;
+          document.documentElement.classList.remove('snapping');
+          updateLineStates();
+        }, 420);
+      }
+
+      function updateLineStates() {
+        lines.forEach((line, i) => {
+          if (i === currentIndex) {
+            line.classList.add('active');
+            line.classList.remove('inactive');
+          } else {
+            line.classList.remove('active');
+            line.classList.add('inactive');
+          }
+        });
+      }
+
+      // Activate lock: called when user scrolls into about section
+      function activateLock(startIndex) {
+        if (snapping) return;
+        recompute();
+        snapping = true;
+        // prevent native wheel default while locked
+        document.addEventListener('wheel', wheelHandler, { passive: false });
+        document.addEventListener('touchstart', touchStartHandler, { passive: false });
+        document.addEventListener('touchmove', touchMoveHandler, { passive: false });
+        document.addEventListener('touchend', touchEndHandler, { passive: false });
+        // set currentIndex to nearest or provided
+        currentIndex = Math.max(0, Math.min(lines.length - 1, (typeof startIndex === 'number') ? startIndex : indexForViewportCenter()));
+        snapToIndex(currentIndex);
+      }
+
+      function releaseLockAndScrollPast() {
+        if (!snapping) return;
+        snapping = false;
+        // remove listeners
+        document.removeEventListener('wheel', wheelHandler, { passive: false });
+        document.removeEventListener('touchstart', touchStartHandler, { passive: false });
+        document.removeEventListener('touchmove', touchMoveHandler, { passive: false });
+        document.removeEventListener('touchend', touchEndHandler, { passive: false });
+        // scroll the page just after about section
+        const after = about.offsetTop + about.offsetHeight - window.innerHeight / 2 + 20;
+        document.documentElement.classList.remove('snapping');
+        window.scrollTo({ top: Math.round(after), behavior: 'smooth' });
+        // clear classes
+        lines.forEach(line => line.classList.remove('active', 'inactive'));
+      }
+
+      function wheelHandler(e) {
+        // only handle vertical scroll
+        if (Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+        e.preventDefault();
+        if (animating) return;
+
+        if (e.deltaY > 0) {
+          // scroll down
+          if (currentIndex < lines.length - 1) {
+            snapToIndex(currentIndex + 1);
+          } else {
+            // already at last line — release lock and continue page scroll
+            releaseLockAndScrollPast();
+          }
+        } else if (e.deltaY < 0) {
+          // scroll up
+          if (currentIndex > 0) {
+            snapToIndex(currentIndex - 1);
+          } else {
+            // at first line and trying to scroll up -> release lock and allow native scroll up
+            // scroll page to a little above about section so user can continue scrolling up
+            const before = Math.max(0, about.offsetTop - window.innerHeight / 2 - 20);
+            releaseLockAndScrollBefore(before);
+          }
+        }
+      }
+
+      // When releasing lock because user scrolls up at the top line, we move page a bit above the about section.
+      function releaseLockAndScrollBefore(target) {
+        if (!snapping) return;
+        snapping = false;
+        document.removeEventListener('wheel', wheelHandler, { passive: false });
+        document.removeEventListener('touchstart', touchStartHandler, { passive: false });
+        document.removeEventListener('touchmove', touchMoveHandler, { passive: false });
+        document.removeEventListener('touchend', touchEndHandler, { passive: false });
+        document.documentElement.classList.remove('snapping');
+        window.scrollTo({ top: Math.round(target), behavior: 'smooth' });
+        lines.forEach(line => line.classList.remove('active', 'inactive'));
+      }
+
+      // Touch handlers for mobile
+      function touchStartHandler(e) {
+        if (e.touches && e.touches.length === 1) {
+          touchStartY = e.touches[0].clientY;
+          touchMoved = false;
+        }
+      }
+      function touchMoveHandler(e) {
+        if (!touchStartY) return;
+        const currentY = e.touches[0].clientY;
+        const dy = touchStartY - currentY;
+        // small threshold to avoid accidental moves
+        if (Math.abs(dy) < 10) return;
+        e.preventDefault(); // prevent native scroll while locked
+        touchMoved = true;
+      }
+      function touchEndHandler(e) {
+        if (!touchStartY || !touchMoved) { touchStartY = null; touchMoved = false; return; }
+        const endY = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientY : null;
+        if (endY == null) { touchStartY = null; touchMoved = false; return; }
+        const dy = touchStartY - endY;
+        // swipe up => positive dy => go to next line
+        if (dy > 20) {
+          if (currentIndex < lines.length - 1) snapToIndex(currentIndex + 1);
+          else releaseLockAndScrollPast();
+        } else if (dy < -20) {
+          if (currentIndex > 0) snapToIndex(currentIndex - 1);
+          else {
+            const before = Math.max(0, about.offsetTop - window.innerHeight / 2 - 20);
+            releaseLockAndScrollBefore(before);
+          }
+        }
+        touchStartY = null;
+        touchMoved = false;
+      }
+
+      // Main watcher: watches regular scroll and activates lock when user reaches the about section
+      function onScrollWatcher() {
+        if (animating) return;
+        recompute();
+        const viewportCenter = window.scrollY + window.innerHeight / 2;
+        const aboutTop = about.offsetTop;
+        const aboutBottom = aboutTop + about.offsetHeight;
+
+        // If already snapping, keep highlighting current index (no change)
+        if (snapping) {
+          updateLineStates();
+          return;
         }
 
-        function scrollToContent() {
-            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+        // If center is within about section -> activate lock
+        if (viewportCenter >= aboutTop && viewportCenter <= aboutBottom) {
+          // start snapping. compute nearest index and activate lock
+          const startIdx = indexForViewportCenter();
+          activateLock(startIdx);
+          return;
         }
 
-        lucide.createIcons();
-    </script>
+        // otherwise ensure lines are in default state
+        lines.forEach(line => line.classList.remove('active', 'inactive'));
+      }
+
+      // Recompute on resize
+      window.addEventListener('resize', () => {
+        recompute();
+      });
+
+      // Watch scroll normally to decide when to lock
+      window.addEventListener('scroll', onScrollWatcher, { passive: true });
+
+      // initial compute
+      recompute();
+
+      // expose for debugging if necessary
+      window.__robot_about_snap = {
+        recompute,
+        activateLock,
+        releaseLockAndScrollPast
+      };
+    })();
+
+    // Google Translate Widget Init
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
