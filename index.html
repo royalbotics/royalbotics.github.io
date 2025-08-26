@@ -42,6 +42,7 @@ a { text-decoration:none; color:inherit; }
   background:rgba(0,0,0,0.7);
   backdrop-filter:blur(10px);
   z-index:1000;
+  border-bottom:1px solid
 }
 body.light .header { background:rgba(255,255,255,0.7); }
 .header img { height:36px; width:auto; }
@@ -52,6 +53,8 @@ body.light .header { background:rgba(255,255,255,0.7); }
   position: fixed; top:20px; left:20px;
   cursor:pointer; z-index:1001;
   display:flex; flex-direction:column; gap:6px;
+
+    
 }
 .menu div { width:30px; height:3px; background:var(--text-color); border-radius:2px; transition:0.3s; }
 .menu.open div:nth-child(1){transform:rotate(-45deg) translate(-5px,5px);}
