@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>River Wood | Handcrafted Wooden Luxury</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Reset & Base */
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Lato', sans-serif;}
+body {background:#fff; color:#333;}
+a {text-decoration:none; color:inherit;}
+
+/* Header with Logo */
+header {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:20px 50px; position:sticky; top:0; background:#fff; z-index:1000;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo-container {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.logo-img {
+  width:50px;
+  height:auto;
+}
+
+.logo-text {
+  font-family:'Playfair Display', serif;
+  font-size:24px;
+  font-weight:700;
+  color:#222;
+}
+
+nav a {margin-left:30px; font-weight:700; color:#555; transition:0.3s;}
+nav a:hover {color:#8B5E3C;}
+
+/* Hero Section */
+.hero {
+  position: relative;
+  height: 65vh; /* collapsed height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%; /* keeps scrolling loop */
+  height: 100%;
+  background: url('https://tse1.mm.bing.net/th/id/OIP.k9DU_G_2Dsd00KGZg8BSRQHaEJ?r=0&rs=1&pid=ImgDetMain&o=7&rm=3') repeat-x;
+  background-size: 120% auto; /* zoomed out */
+  background-position: center;
+  filter: brightness(0.5);
+  z-index: 1;
+  animation: scrollBg 60s linear infinite;
+}
+
+@keyframes scrollBg {
+  0% {transform: translateX(0);}
+  100% {transform: translateX(-50%);}
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.hero-content h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.hero-content p {
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+
+.hero-content a {
+  background:#8B5E3C;
+  padding:15px 40px;
+  color:#fff;
+  font-weight:700;
+  border-radius:5px;
+  transition:0.3s;
+}
+.hero-content a:hover {background:#a16c4b;}
+
+/* Sections */
+section {padding:80px 50px;}
+h2 {font-family:'Playfair Display', serif; font-size:40px; margin-bottom:50px; text-align:center;}
+
+/* Products */
+.product-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px;}
+.product-card {background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.08); transition:transform 0.3s;}
+.product-card:hover {transform:translateY(-5px);}
+.product-card img {width:100%; height:250px; object-fit:cover;}
+.product-card .info {padding:20px;}
+.product-card .info h3 {font-family:'Playfair Display', serif; margin-bottom:10px;}
+.product-card .info p {color:#555; margin-bottom:15px;}
+.product-card .info a {background:#8B5E3C; padding:10px 20px; color:#fff; font-weight:700; border-radius:5px; transition:0.3s;}
+.product-card .info a:hover {background:#a16c4b;}
+
+/* About */
+.about {display:flex; flex-wrap:wrap; align-items:center; gap:50px; background:#f9f7f6;}
+.about img {flex:1; max-width:500px; border-radius:10px; object-fit:cover;}
+.about .text {flex:1;}
+.about .text p {font-size:18px; line-height:1.8; color:#555;}
+
+/* Footer */
+footer {
+  background:#222; color:#fff; padding:40px 50px; display:flex; justify-content:space-between; flex-wrap:wrap;
+}
+footer .social a {margin-left:15px; color:#fff; font-weight:700; transition:0.3s;}
+footer .social a:hover {color:#8B5E3C;}
+
+@media(max-width:768px){
+  header {flex-direction:column; gap:10px;}
+  .about {flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-container">
+    <img src="https://i.ibb.co/PvSZbd91/river-wood-logo.png" alt="River Wood Logo" class="logo-img">
+    <span class="logo-text">River Wood</span>
+  </div>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#products">Products</a>
+    <a href="#about">About Us</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <h1>Handcrafted Wooden Luxury</h1>
+    <p>Natural. Elegant. Timeless.</p>
+    <a href="#products">Shop Now</a>
+  </div>
+</section>
+
+<section id="products">
+  <h2>Featured Products</h2>
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="https://i.ibb.co/8ghxpmgv/river-wood-decor.png" alt="River Wood Decor">
+      <div class="info">
+        <h3>River Wood Decor</h3>
+        <p>Elegant handcrafted decor from natural river wood.</p>
+        <a href="#">View Product</a>
+      </div>
+    </div>
+    <div class="product-card">
+      <img src="https://i.ibb.co/xS4JxSwc/river-wood-boul.png" alt="Handcrafted Wooden Bowl">
+      <div class="info">
+        <h3>Handcrafted Wooden Bowl</h3>
+        <p>Premium bowl showcasing natural wood patterns.</p>
+        <a href="#">View Product</a>
+      </div>
+    </div>
+    
+</section>
+
+<section class="about" id="about">
+  <img src="https://i.ibb.co/PvSZbd91/river-wood-logo.png" alt="About Company">
+  <div class="text">
+    <h2>About River Wood</h2>
+    <p>At River Wood, we celebrate the natural beauty of wood. Every piece is handcrafted with care, combining traditional techniques and modern aesthetics. Our goal is to bring elegance, warmth, and character to your home through sustainable, premium wooden products.</p>
+  </div>
+</section>
+
+<footer id="contact">
+  <div>© 2025 River Wood. All Rights Reserved.</div>
+  <div class="social">
+    <a href="#">Instagram</a>
+    <a href="#">Facebook</a>
+    <a href="#">Pinterest</a>
+  </div>
+</footer>
+
+</body>
+</html>
