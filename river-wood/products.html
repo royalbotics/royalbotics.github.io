@@ -5,76 +5,47 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Products | River Wood</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<script async src="https://pay.google.com/gp/p/js/pay.js"></script>
 <style>
-/* Reset & Base */
+/* Base & Reset */
 * {margin:0; padding:0; box-sizing:border-box; font-family:'Lato', sans-serif;}
-body {background:#fff; color:#333;}
-a {text-decoration:none; color:inherit;}
-
-/* Header with Logo */
-header {
-  display:flex; justify-content:space-between; align-items:center;
-  padding:20px 50px; position:sticky; top:0; background:#fff; z-index:1000;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
-}
+body {background:#fff; color:#333; overflow-x:hidden;}
+a {text-decoration:none; color:inherit; cursor:pointer;}
+button {cursor:pointer; border:none; outline:none;}
+header {display:flex; justify-content:space-between; align-items:center; padding:20px 50px; position:sticky; top:0; background:#fff; z-index:1000; box-shadow:0 2px 5px rgba(0,0,0,0.1);}
 .logo-container {display:flex; align-items:center; gap:10px;}
 .logo-img {width:50px; height:auto;}
 .logo-text {font-family:'Playfair Display', serif; font-size:24px; font-weight:700; color:#222;}
-nav a {margin-left:30px; font-weight:700; color:#555; transition:0.3s;}
+nav {display:flex; align-items:center; gap:30px;}
+nav a {font-weight:700; color:#555; transition:0.3s;}
 nav a:hover {color:#8B5E3C;}
-
-/* Sections */
+.cart-icon {position:relative; font-size:22px; color:#555;}
+.cart-icon span {position:absolute; top:-8px; right:-10px; background:#8B5E3C; color:#fff; font-size:12px; padding:2px 6px; border-radius:50%;}
 section {padding:80px 50px;}
 h2 {font-family:'Playfair Display', serif; font-size:40px; margin-bottom:50px; text-align:center;}
-
-/* Product Grid */
-.product-grid {
-  display:grid; 
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); 
-  gap:30px;
-}
-.product-card {
-  background:#fff; 
-  border-radius:10px; 
-  overflow:hidden; 
-  box-shadow:0 10px 25px rgba(0,0,0,0.08); 
-  transition:transform 0.3s;
-}
+.product-grid {display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:30px;}
+.product-card {background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.08); transition:transform 0.3s;}
 .product-card:hover {transform:translateY(-5px);}
-.product-card img {
-  width:100%; 
-  height:250px; 
-  object-fit:contain; /* ensures full image is visible without cutting */
-  background:#f9f7f6; /* light background so transparent/odd images still look clean */
-}
+.product-card img {width:100%; height:250px; object-fit:contain; background:#f9f7f6;}
 .product-card .info {padding:20px;}
 .product-card .info h3 {font-family:'Playfair Display', serif; margin-bottom:10px;}
 .product-card .info p {color:#555; margin-bottom:15px;}
-.product-card .info a {
-  background:#8B5E3C; 
-  padding:10px 20px; 
-  color:#fff; 
-  font-weight:700; 
-  border-radius:5px; 
-  transition:0.3s; 
-  display:inline-block;
-}
-.product-card .info a:hover {background:#a16c4b;}
-
-/* Footer */
-footer {
-  background:#222; color:#fff; padding:40px 50px; 
-  display:flex; justify-content:space-between; flex-wrap:wrap;
-}
+.product-card .info button {background:#8B5E3C; padding:10px 20px; color:#fff; font-weight:700; border-radius:5px; transition:0.3s; display:inline-block;}
+.product-card .info button:hover {background:#a16c4b;}
+.cart-menu {position:fixed; top:0; right:-400px; width:350px; height:100%; background:#fff; box-shadow:-2px 0 10px rgba(0,0,0,0.2); transition:0.3s; z-index:2000; display:flex; flex-direction:column;}
+.cart-menu.active {right:0;}
+.cart-header {padding:20px; font-size:20px; font-weight:700; background:#f9f7f6; display:flex; justify-content:space-between; align-items:center;}
+.cart-items {flex:1; overflow-y:auto; padding:20px;}
+.cart-footer {padding:20px; border-top:1px solid #ddd;}
+.cart-footer button {width:100%; padding:12px; background:#8B5E3C; color:#fff; font-weight:700; border-radius:5px;}
+.cart-footer button:hover {background:#a16c4b;}
+.checkout-form label {display:block; margin-top:10px; font-weight:700;}
+.checkout-form input {width:100%; padding:10px; margin-top:5px; border:1px solid #ccc; border-radius:5px;}
+#container-gpay {margin-top:20px;}
+footer {background:#222; color:#fff; padding:40px 50px; display:flex; justify-content:space-between; flex-wrap:wrap; margin-top:50px;}
 footer .social a {margin-left:15px; color:#fff; font-weight:700; transition:0.3s;}
 footer .social a:hover {color:#8B5E3C;}
-
-/* Mobile Adjustments */
-@media(max-width:768px){
-  header {flex-direction:column; gap:10px;}
-  section {padding:50px 20px;}
-  h2 {font-size:32px; margin-bottom:30px;}
-}
+@media(max-width:768px){header{flex-direction:column; gap:10px;} section{padding:50px 20px;} h2{font-size:32px; margin-bottom:30px;} .cart-menu{width:100%;}}
 </style>
 </head>
 <body>
@@ -85,10 +56,11 @@ footer .social a:hover {color:#8B5E3C;}
     <span class="logo-text">River Wood</span>
   </div>
   <nav>
-    <a href="index.html">Home</a>
-    <a href="products.html">Products</a>
-    <a href="about.html">About Us</a>
-    <a href="contact.html">Contact</a>
+    <a href="#">Home</a>
+    <a href="#">Products</a>
+    <a href="#">About Us</a>
+    <a href="#">Contact</a>
+    <a class="cart-icon" onclick="toggleCart()">🛒<span id="cart-count">0</span></a>
   </nav>
 </header>
 
@@ -99,39 +71,31 @@ footer .social a:hover {color:#8B5E3C;}
       <img src="https://i.ibb.co/8ghxpmgv/river-wood-decor.png" alt="River Wood Decor">
       <div class="info">
         <h3>River Wood Decor</h3>
-        <p>Elegant handcrafted decor from natural river wood.</p>
-        <a href="#">View Product</a>
+        <p>$50 - Elegant handcrafted decor from natural river wood.</p>
+        <button onclick="addToCart('River Wood Decor',50)">Add to Cart</button>
       </div>
     </div>
-
     <div class="product-card">
       <img src="https://i.ibb.co/xS4JxSwc/river-wood-boul.png" alt="Handcrafted Wooden Bowl">
       <div class="info">
         <h3>Handcrafted Wooden Bowl</h3>
-        <p>Premium bowl showcasing natural wood patterns.</p>
-        <a href="#">View Product</a>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <img src="https://i.ibb.co/8ghxpmgv/river-wood-decor.png" alt="Rustic Wooden Tray">
-      <div class="info">
-        <h3>Rustic Wooden Tray</h3>
-        <p>Perfect serving tray with timeless charm.</p>
-        <a href="#">View Product</a>
-      </div>
-    </div>
-
-    <div class="product-card">
-      <img src="https://i.ibb.co/xS4JxSwc/river-wood-boul.png" alt="Wooden Coaster Set">
-      <div class="info">
-        <h3>Wooden Coaster Set</h3>
-        <p>Protect surfaces with style using natural wood coasters.</p>
-        <a href="#">View Product</a>
+        <p>$70 - Premium bowl showcasing natural wood patterns.</p>
+        <button onclick="addToCart('Handcrafted Wooden Bowl',70)">Add to Cart</button>
       </div>
     </div>
   </div>
 </section>
+
+<div class="cart-menu" id="cartMenu">
+  <div class="cart-header">
+    <span>Your Cart</span>
+    <span style="cursor:pointer;" onclick="toggleCart()">✖</span>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <button onclick="startCheckout()">Checkout</button>
+  </div>
+</div>
 
 <footer>
   <div>© 2025 River Wood. All Rights Reserved.</div>
@@ -141,6 +105,109 @@ footer .social a:hover {color:#8B5E3C;}
     <a href="#">Pinterest</a>
   </div>
 </footer>
+<style> #checkout-next {
+    width: 100%;
+    padding: 16px;
+    background: #8B5E3C;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 8px;
+    font-size: 18px;
+    margin-top: 20px;
+    transition: background 0.3s, transform 0.2s;
+}
 
+#checkout-next:hover {
+    background: #a16c4b;
+    transform: scale(1.05);
+}
+</style>
+<script>
+let cart=[];
+
+function toggleCart(){
+  document.getElementById('cartMenu').classList.toggle('active');
+  renderCart();
+}
+
+function addToCart(name, price){
+  cart.push({name, price});
+  document.getElementById('cart-count').innerText=cart.length;
+  renderCart();
+}
+
+function removeItem(index){
+  cart.splice(index,1);
+  document.getElementById('cart-count').innerText=cart.length;
+  renderCart();
+}
+
+function renderCart(){
+  const cartItems=document.getElementById('cartItems');
+  if(cart.length===0){cartItems.innerHTML="<p>Your cart is empty.</p>"; return;}
+  cartItems.innerHTML="";
+  let total=0;
+  cart.forEach((item,i)=>{
+    total+=item.price;
+    cartItems.innerHTML+=`<p>${item.name} - $${item.price} <span style="color:red;cursor:pointer;" onclick="removeItem(${i})">[Remove]</span></p>`;
+  });
+  cartItems.innerHTML+=`<hr><p><strong>Total: $${total}</strong></p>`;
+}
+
+function startCheckout(){
+  if(cart.length===0){renderCart(); return;}
+  const cartItems=document.getElementById('cartItems');
+  cartItems.innerHTML=`
+    <div class="checkout-form">
+      <h3>Shipping Address</h3>
+      <label>Name</label><input type="text" id="name" placeholder="Full Name">
+      <label>Address</label><input type="text" id="address" placeholder="Street, City, ZIP">
+      <label>Email</label><input type="email" id="email" placeholder="you@example.com">
+      <button id="checkout-next" onclick="showGPay()">Next</button>
+      <div id="container-gpay"></div>
+    </div>
+  `;
+}
+
+function showGPay(){
+  const name=document.getElementById('name').value.trim();
+  const address=document.getElementById('address').value.trim();
+  const email=document.getElementById('email').value.trim();
+  if(!name || !address || !email){alert("Please fill all fields."); return;}
+  const total=cart.reduce((sum,i)=>sum+i.price,0).toFixed(2);
+
+  const paymentsClient = new google.payments.api.PaymentsClient({environment:'TEST'});
+  const paymentDataRequest = {
+    apiVersion:2,
+    apiVersionMinor:0,
+    allowedPaymentMethods:[{
+      type:'CARD',
+      parameters:{allowedAuthMethods:['PAN_ONLY','CRYPTOGRAM_3DS'], allowedCardNetworks:['VISA','MASTERCARD']},
+      tokenizationSpecification:{type:'PAYMENT_GATEWAY', parameters:{gateway:'example', gatewayMerchantId:'exampleGatewayMerchantId'}}
+    }],
+    merchantInfo:{merchantName:'River Wood Test'},
+    transactionInfo:{totalPriceStatus:'FINAL', totalPrice:total, currencyCode:'USD'}
+  };
+
+  const container=document.getElementById('container-gpay');
+  container.innerHTML="";
+  const button = paymentsClient.createButton({
+    onClick:()=>{processPayment(paymentsClient, paymentDataRequest);}
+  });
+  container.appendChild(button);
+}
+
+function processPayment(paymentsClient, paymentDataRequest){
+  paymentsClient.loadPaymentData(paymentDataRequest).then(function(paymentData){
+    alert("Test payment successful! Payment token: "+paymentData.paymentMethodData.tokenizationData.token);
+    cart=[];
+    document.getElementById('cart-count').innerText=0;
+    toggleCart();
+  }).catch(function(err){
+    console.error(err);
+    alert("Payment canceled or failed (sandbox).");
+  });
+}
+</script>
 </body>
 </html>
