@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Products | River Wood</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Reset & Base */
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Lato', sans-serif;}
+body {background:#fff; color:#333;}
+a {text-decoration:none; color:inherit;}
+
+/* Header with Logo */
+header {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:20px 50px; position:sticky; top:0; background:#fff; z-index:1000;
+  box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+.logo-container {display:flex; align-items:center; gap:10px;}
+.logo-img {width:50px; height:auto;}
+.logo-text {font-family:'Playfair Display', serif; font-size:24px; font-weight:700; color:#222;}
+nav a {margin-left:30px; font-weight:700; color:#555; transition:0.3s;}
+nav a:hover {color:#8B5E3C;}
+
+/* Sections */
+section {padding:80px 50px;}
+h2 {font-family:'Playfair Display', serif; font-size:40px; margin-bottom:50px; text-align:center;}
+
+/* Product Grid */
+.product-grid {
+  display:grid; 
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); 
+  gap:30px;
+}
+.product-card {
+  background:#fff; 
+  border-radius:10px; 
+  overflow:hidden; 
+  box-shadow:0 10px 25px rgba(0,0,0,0.08); 
+  transition:transform 0.3s;
+}
+.product-card:hover {transform:translateY(-5px);}
+.product-card img {
+  width:100%; 
+  height:250px; 
+  object-fit:contain; /* ensures full image is visible without cutting */
+  background:#f9f7f6; /* light background so transparent/odd images still look clean */
+}
+.product-card .info {padding:20px;}
+.product-card .info h3 {font-family:'Playfair Display', serif; margin-bottom:10px;}
+.product-card .info p {color:#555; margin-bottom:15px;}
+.product-card .info a {
+  background:#8B5E3C; 
+  padding:10px 20px; 
+  color:#fff; 
+  font-weight:700; 
+  border-radius:5px; 
+  transition:0.3s; 
+  display:inline-block;
+}
+.product-card .info a:hover {background:#a16c4b;}
+
+/* Footer */
+footer {
+  background:#222; color:#fff; padding:40px 50px; 
+  display:flex; justify-content:space-between; flex-wrap:wrap;
+}
+footer .social a {margin-left:15px; color:#fff; font-weight:700; transition:0.3s;}
+footer .social a:hover {color:#8B5E3C;}
+
+/* Mobile Adjustments */
+@media(max-width:768px){
+  header {flex-direction:column; gap:10px;}
+  section {padding:50px 20px;}
+  h2 {font-size:32px; margin-bottom:30px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-container">
+    <img src="https://i.ibb.co/PvSZbd91/river-wood-logo.png" alt="River Wood Logo" class="logo-img">
+    <span class="logo-text">River Wood</span>
+  </div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="products.html">Products</a>
+    <a href="about.html">About Us</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</header>
+
+<section id="products">
+  <h2>Our Products</h2>
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="https://i.ibb.co/8ghxpmgv/river-wood-decor.png" alt="River Wood Decor">
+      <div class="info">
+        <h3>River Wood Decor</h3>
+        <p>Elegant handcrafted decor from natural river wood.</p>
+        <a href="#">View Product</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <img src="https://i.ibb.co/xS4JxSwc/river-wood-boul.png" alt="Handcrafted Wooden Bowl">
+      <div class="info">
+        <h3>Handcrafted Wooden Bowl</h3>
+        <p>Premium bowl showcasing natural wood patterns.</p>
+        <a href="#">View Product</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <img src="https://i.ibb.co/8ghxpmgv/river-wood-decor.png" alt="Rustic Wooden Tray">
+      <div class="info">
+        <h3>Rustic Wooden Tray</h3>
+        <p>Perfect serving tray with timeless charm.</p>
+        <a href="#">View Product</a>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <img src="https://i.ibb.co/xS4JxSwc/river-wood-boul.png" alt="Wooden Coaster Set">
+      <div class="info">
+        <h3>Wooden Coaster Set</h3>
+        <p>Protect surfaces with style using natural wood coasters.</p>
+        <a href="#">View Product</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2025 River Wood. All Rights Reserved.</div>
+  <div class="social">
+    <a href="#">Instagram</a>
+    <a href="#">Facebook</a>
+    <a href="#">Pinterest</a>
+  </div>
+</footer>
+
+</body>
+</html>
