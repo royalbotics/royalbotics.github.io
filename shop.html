@@ -70,6 +70,223 @@ body.light .header-center input::placeholder { color: rgba(0,0,0,0.4); }
 .header-right .cart { position:relative; cursor:pointer; }
 .header-right .cart span { position:absolute; top:-6px; right:-6px; background:var(--accent-color); color:#fff; font-size:0.7rem; font-weight:600; border-radius:50%; width:16px; height:16px; display:flex; align-items:center; justify-content:center; }
 
+/* MENU (inside header now) */
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  margin-right: 12px; /* spacing between menu and logo */
+}
+.menu div {
+  width: 24px;
+  height: 3px;
+  background: var(--text-color);
+  border-radius: 2px;
+  transition: 0.3s;
+}
+.menu.open div:nth-child(1){transform:rotate(-45deg) translate(-5px,5px);}
+.menu.open div:nth-child(2){opacity:0;}
+.menu.open div:nth-child(3){transform:rotate(45deg) translate(-5px,-5px);}
+
+.sidebar { 
+  position: fixed; 
+  top:0; 
+  left:-240px; 
+  width:220px; 
+  height:100vh; 
+  background: var(--bg-color); 
+  border-right:1px solid var(--card-border); 
+  backdrop-filter:blur(12px); 
+  padding-top:100px; 
+  transition:left 0.4s ease; 
+  z-index:999; 
+}
+.sidebar.open { left:0; }
+.sidebar a { display:block; padding:18px 30px; font-size:1.05rem; transition:0.3s; }
+.sidebar a:hover { color:var(--accent-color); transform:translateX(8px); }
+
+/* SHOP LAYOUT */
+.shop-section { padding:120px 20px 60px; text-align:center; }
+.product-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:30px; justify-items:center; }
+
+.product-card { background:var(--bg-color); border:1px solid var(--card-border); border-radius:20px; overflow:hidden; padding:20px; width:100%; max-width:260px; box-shadow:0 8px 25px rgba(0,0,0,0.3); transition: transform 0.3s, box-shadow 0.3s; }
+.product-card:hover { transform:translateY(-5px); box-shadow:0 12px 35px rgba(0,0,0,0.5); }
+.product-card img { width:100%; border-radius:15px; margin-bottom:15px; }
+.product-card h3 { font-size:1.3rem; margin-bottom:8px; }
+.product-card p { font-size:0.95rem; opacity:0.75; margin-bottom:12px; }
+.product-card a { display:inline-block; padding:10px 20px; border-radius:25px; background:var(--accent-color); color:#fff; font-weight:600; transition:0.3s; }
+.product-card a:hover { opacity:0.85; }
+
+/* THEME MODAL */
+.theme-modal { position:fixed; top:0; left:0; right:0; bottom:0; background: url('/screenshot.png') center/cover no-repeat; display:flex; align-items:center; justify-content:center; z-index:2000; opacity:1; transition: opacity 0.5s ease; }
+.theme-modal::before { content:''; position:absolute; inset:0; background: rgba(0,0,0,0.6); z-index:1; }
+.theme-modal.hide { opacity:0; pointer-events:none; }
+.theme-box { position: relative; z-index:10; display:flex; flex-direction:column; background: var(--bg-color); color: var(--text-color); border-radius:20px; overflow:hidden; width:600px; max-width:90%; border:1px solid var(--card-border); transform: scale(1); transition: transform 0.5s ease, background 0.5s ease, color 0.5s ease; }
+.theme-box.show { transform: scale(1); }
+.theme-box.hide { transform: scale(0.9); }
+.theme-preview { display:flex; height:220px; }
+.theme-half { flex:1; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:1.2rem; cursor:pointer; transition:0.3s, transform 0.3s; }
+.theme-half:hover { transform: scale(1.05); }
+.theme-half.dark { background:#000; color:#fff; }
+.theme-half.light { background:#fff; color:#000; position:relative; }
+.theme-half.light::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,#fff 70%,#d8b38c 100%); z-index:-1; }
+.theme-half.selected { outline:4px solid #a100f2; }
+.theme-save { background:var(--accent-color); color:#fff; padding:16px; text-align:center; cursor:pointer; font-weight:600; transition:0.3s; }
+.theme-save:hover { opacity:0.85; }
+
+/* FOOTER */
+footer { background:var(--bg-color); color:var(--text-color); padding:24px 0; text-align:center; font-size:0.85rem; position:relative; }
+footer::before { content:''; position:absolute; top:0; left:50%; width:80%; height:1px; background:linear-gradient(90deg,transparent,var(--accent-color),transparent); transform:translateX(-50%); }
+</style>
+</head>
+<body>
+
+<!-- THEME SELECTOR -->
+<div class="theme-modal" id="themeModal">
+  <div class="theme-box show" id="themeBox">
+    <div class="theme-preview">
+      <div class="theme-half dark" onclick="selectTheme('dark')">Dark Theme</div>
+      <div class="theme-half light" onclick="selectTheme('light')">Light Theme</div>
+    </div>
+    <div class="theme-save" onclick="saveTheme()">Save</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="menu" onclick="toggleMenu()"><div></div><div></div><div></div></div>
+    <img src="/logo-main.png" alt="Ro&Bot™">
+    <span>Shop</span>
+  </div>
+  <div class="header-center">
+    <input type="text" placeholder="Search products...">
+  </div>
+  <div class="header-right">
+    <div class="cart">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span>0</span>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <a href="index.html">Home</a>
+  <a href="mission.html">Our Mission</a>
+  <a href="#samanthai">SamanthAI</a>
+  <a href="#etft">eTFT Display™</a>
+  <a href="#alma">Alma</a>
+  <a href="research.html">Research</a>
+  <a href="tof.html">Terms of Service</a>
+</div>
+
+<!-- SHOP CONTENT -->
+<section class="shop-section">
+  <div class="product-grid">
+    <div class="product-card">
+      <img src="mockup1.png" alt="AI Drone Assistant">
+      <h3>AI Drone Assistant</h3>
+      <p>Autonomous drone that manages your home and office tasks.</p>
+      <a href="#">View</a>
+    </div>
+    <div class="product-card">
+      <img src="mockup2.png" alt="HoloDesk 3000">
+      <h3>HoloDesk 3000</h3>
+      <p>Interactive holographic workstation for productivity and entertainment.</p>
+      <a href="#">View</a>
+    </div>
+    <div class="product-card">
+      <img src="mockup3.png" alt="NeuroLamp">
+      <h3>NeuroLamp</h3>
+      <p>Smart ambient lamp that adapts to your mood and circadian rhythm.</p>
+      <a href="#">View</a>
+    </div>
+    <div class="product-card">
+      <img src="mockup4.png" alt="SamanthAI Mini">
+      <h3>SamanthAI Mini</h3>
+      <p>Compact AI assistant for your kitchen, office, or bedroom.</p>
+      <a href="#">View</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  © 2025 Ro&Bot™. All rights reserved. Ro&Bot™ is claimed as a trademark by RoAndBot.
+  <p>Unauthorized use, reproduction, or distribution of Ro&Bot™ may result in legal action.</p>
+</footer>
+
+<script>
+let chosenTheme = null;
+function toggleMenu(){ 
+  document.querySelector('.menu').classList.toggle('open'); 
+  document.getElementById('sidebar').classList.toggle('open'); 
+}
+function selectTheme(theme){ 
+  chosenTheme=theme; 
+  document.querySelectorAll('.theme-half').forEach(el=>el.classList.remove('selected')); 
+  document.querySelector(\`.theme-half.\${theme}\`).classList.add('selected'); 
+}
+function saveTheme(){ 
+  if(!chosenTheme) return; 
+  if(chosenTheme==='light'){ document.body.classList.add('light'); } 
+  else { document.body.classList.remove('light'); } 
+  localStorage.setItem('theme', chosenTheme); 
+  const modal=document.getElementById('themeModal'); 
+  const box=document.getElementById('themeBox'); 
+  box.classList.add('hide'); 
+  modal.classList.add('hide'); 
+  setTimeout(()=>{ modal.style.display='none'; },500);
+}
+window.onload = () => { 
+  const savedTheme=localStorage.getItem('theme'); 
+  if(savedTheme){ 
+    if(savedTheme==='light'){ document.body.classList.add('light'); } 
+    document.getElementById('themeModal').style.display='none'; 
+  } 
+};
+</script>
+
+</body>
+</html>
+  justify-content: space-between;
+  padding: 0 20px;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  box-sizing: border-box;
+}
+body.light .header { background: rgba(255,255,255,0.85); }
+
+.header-left, .header-center, .header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-left img { height:36px; width:auto; }
+.header-left span { font-size:1.3rem; font-weight:600; letter-spacing:-0.5px; margin-left:6px; }
+
+.header-center { flex:1; justify-content:center; padding:0 20px; }
+.header-center input {
+  width:100%;
+  max-width:400px;
+  padding:8px 12px;
+  border-radius:20px;
+  border:none;
+  outline:none;
+  background: rgba(255,255,255,0.1);
+  color: var(--text-color);
+  transition: background 0.3s;
+}
+body.light .header-center input { background: rgba(0,0,0,0.05); color: var(--text-color); }
+.header-center input::placeholder { color: rgba(255,255,255,0.5); }
+body.light .header-center input::placeholder { color: rgba(0,0,0,0.4); }
+
+.header-right .cart { position:relative; cursor:pointer; }
+.header-right .cart span { position:absolute; top:-6px; right:-6px; background:var(--accent-color); color:#fff; font-size:0.7rem; font-weight:600; border-radius:50%; width:16px; height:16px; display:flex; align-items:center; justify-content:center; }
+
 /* MENU */
 .menu { position: fixed; top:20px; left:20px; cursor:pointer; z-index:1001; display:flex; flex-direction:column; gap:6px; }
 .menu div { width:30px; height:3px; background:var(--text-color); border-radius:2px; transition:0.3s; }
