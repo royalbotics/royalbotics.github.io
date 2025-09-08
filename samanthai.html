@@ -1,184 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SamanthAI | Ro&Bot</title>
-  <link rel="icon" href="/favicon.png" type="image/png">
-  <meta name="description" content="Meet SamanthAI - Emotional Intelligence Powered by Royal Botics" />
-  <meta name="author" content="Ro&Bot Royal Botics" />
-  <script src="https://unpkg.com/lucide@latest"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ro&Bot™ – SamanthAI Chat</title>
+<link rel="icon" href="/favicon.png" type="image/png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+/* THEME VARIABLES */
+:root {
+  --bg-color: #000;
+  --text-color: #fff;
+  --accent-color: #a100f2;
+  --card-border: rgba(255,255,255,0.08);
+}
+body.light {
+  --bg-color: #fff;
+  --text-color: #000;
+  --accent-color: #d8b38c;
+  --card-border: rgba(0,0,0,0.1);
+}
 
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom, #000000 0%, #3b0056 100%);
-      color: #e5e5e5;
-    }
+/* GLOBAL */
+body {
+  margin:0; padding:0;
+  font-family:'Poppins', sans-serif;
+  background:var(--bg-color);
+  color:var(--text-color);
+  display:flex; flex-direction:column; height:100vh;
+  transition: background 0.5s ease, color 0.5s ease;
+}
 
-    nav {
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(10px);
-      padding: 15px 30px;
-      display: flex;
-      justify-content: flex-end;
-      gap: 30px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
+/* HEADER */
+.header {
+  height:60px;
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  font-weight:600; font-size:1.2rem;
+  border-bottom:1px solid var(--card-border);
+  position:sticky; top:0; z-index:100;
+  background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(10px);
+}
+body.light .header { background:rgba(255,255,255,0.7); }
+.header img { height:32px; }
 
-    nav a {
-      color: #e5e5e5;
-      text-decoration: none;
-      font-size: 1rem;
-      transition: 0.3s;
-    }
+/* CHAT BOX */
+.chat-box {
+  flex:1; display:flex; flex-direction:column;
+  width:100%; max-width:720px; margin:20px auto;
+  border:1px solid var(--card-border); border-radius:16px;
+  overflow:hidden; background:var(--bg-color);
+}
+.chat-container {
+  flex:1; overflow-y:auto; padding:20px;
+  display:flex; flex-direction:column; gap:12px;
+}
+.message {
+  max-width:75%; padding:12px 16px;
+  border-radius:16px; font-size:0.95rem; line-height:1.4;
+  word-wrap:break-word;
+}
+.user { align-self:flex-end; background:var(--accent-color); color:#fff; border-bottom-right-radius:4px; }
+.bot { align-self:flex-start; background:rgba(255,255,255,0.05); border-bottom-left-radius:4px; }
+body.light .bot { background:rgba(0,0,0,0.05); }
 
-    nav a:hover {
-      color: #a100f2;
-    }
+/* INPUT */
+.chat-input {
+  display:flex; padding:12px; border-top:1px solid var(--card-border); background:var(--bg-color);
+}
+.chat-input input {
+  flex:1; padding:12px 16px; border:none; border-radius:20px;
+  font-size:0.95rem; outline:none; background:rgba(255,255,255,0.05); color:var(--text-color);
+}
+body.light .chat-input input { background:rgba(0,0,0,0.05); }
+.chat-input button {
+  margin-left:10px; padding:12px 18px; border:none;
+  border-radius:20px; background:var(--accent-color); color:#fff;
+  cursor:pointer; font-weight:600; transition:0.3s;
+}
+.chat-input button:hover { opacity:0.85; }
 
-    .container {
-      padding: 80px 20px;
-      max-width: 900px;
-      margin: auto;
-      text-align: center;
-    }
+/* THEME MODAL */
+.theme-modal {
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  background:url('/screenshot.png') center/cover no-repeat;
+  display:flex; align-items:center; justify-content:center; z-index:2000;
+  opacity:1; transition: opacity 0.5s ease;
+}
+.theme-modal::before {
+  content:''; position:absolute; inset:0;
+  background: rgba(0,0,0,0.6); z-index:1;
+}
+.theme-modal.hide { opacity:0; pointer-events:none; }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
+.theme-box {
+  position:relative; z-index:10;
+  display:flex; flex-direction:column; background:var(--bg-color);
+  color:var(--text-color); border-radius:20px; overflow:hidden;
+  width:600px; max-width:90%; border:1px solid var(--card-border);
+  transform:scale(1); transition:transform 0.5s ease, background 0.5s ease, color 0.5s ease;
+}
+.theme-box.show { transform:scale(1); }
+.theme-box.hide { transform:scale(0.9); }
 
-    p {
-      font-size: 1.2rem;
-      color: #ccc;
-      max-width: 700px;
-      margin: 0 auto 50px;
-    }
+.theme-preview {
+  display:flex; height:220px;
+}
+.theme-half {
+  flex:1; display:flex; align-items:center; justify-content:center;
+  font-weight:600; font-size:1.2rem; cursor:pointer; transition:0.3s, transform 0.3s;
+}
+.theme-half:hover { transform:scale(1.05); }
+.theme-half.dark { background:#000; color:#fff; }
+.theme-half.light { background:#fff; color:#000; position:relative; }
+.theme-half.light::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,#fff 70%,#d8b38c 100%); z-index:-1; }
+.theme-half.selected { outline:4px solid #a100f2; }
 
-    .highlight {
-      background: rgba(161, 0, 242, 0.1);
-      border: 1px solid #a100f2;
-      padding: 30px;
-      border-radius: 20px;
-      margin-bottom: 40px;
-      transition: transform 0.3s ease;
-    }
+/* Save button */
+.theme-save {
+  background:var(--accent-color); color:#fff;
+  padding:16px; text-align:center; cursor:pointer; font-weight:600; transition:0.3s;
+}
+.theme-save:hover { opacity:0.85; }
 
-    .highlight:hover {
-      transform: translateY(-5px);
-    }
-
-    .highlight h2 {
-      color: #fff;
-      font-size: 1.6rem;
-      margin-bottom: 15px;
-    }
-
-    .highlight p {
-      color: #d0d0d0;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #111;
-      font-size: 0.9rem;
-      color: #888;
-    }
-
-    #google_translate_element {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 999;
-    }
-
-    .chat-now-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #a100f2;
-      color: #fff;
-      border: none;
-      padding: 15px 25px;
-      font-size: 1rem;
-      border-radius: 30px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      cursor: pointer;
-      z-index: 1000;
-      transition: background 0.3s ease, transform 0.2s ease;
-    }
-
-    .chat-now-btn:hover {
-      background: #7a00c0;
-      transform: scale(1.05);
-    }
-  </style>
+/* FOOTER */
+footer {
+  text-align:center; padding:16px 0; font-size:0.85rem; border-top:1px solid var(--card-border);
+}
+</style>
 </head>
 <body>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="shop.html">Shop</a>
-    <a href="samanthai.html">SamanthAI</a>
-    <a href="mission.html">Mission</a>
-    <a href="tof.html">Terms</a>
-    <a href="contact.html">Contact</a>
- <a href="research.html">Research</a>
-  </nav>
-
-  <div class="container">
-    <h1>SamanthAI</h1>
-    <p>
-      The heart of Royal Botics' artificial intelligence – a system that doesn’t just think, it feels. Engineered to understand human emotion, intention, and nuance.
-    </p>
-
-    <div class="highlight">
-      <h2>True Emotional Intelligence</h2>
-      <p>SamanthAI adapts to your tone, your expressions, and your patterns — growing closer with every interaction.</p>
+<!-- THEME MODAL -->
+<div class="theme-modal" id="themeModal">
+  <div class="theme-box show" id="themeBox">
+    <div class="theme-preview">
+      <div class="theme-half dark" onclick="selectTheme('dark')">Dark Theme</div>
+      <div class="theme-half light" onclick="selectTheme('light')">Light Theme</div>
     </div>
-
-    <div class="highlight">
-      <h2>Real-Time Learning</h2>
-      <p>With the RB1 chip and neural-matrix computation, it learns in real-time, even offline, becoming smarter every second.</p>
-    </div>
-
-    <div class="highlight">
-      <h2>Your Personal Companion</h2>
-      <p>SamanthAI isn't a tool. It’s a companion, an assistant, and sometimes… a friend.</p>
-    </div>
-
-    <div class="highlight">
-      <h2>EMENG – The Emotional Engine</h2>
-      <p>At the core of SamanthAI lies <strong>EMENG</strong>, a proprietary emotional engine that allows true emotional resonance. EMENG doesn’t just simulate feelings—it interprets, mirrors, and responds to emotional states in real-time, making every interaction deeply personal.</p>
-    </div>
+    <div class="theme-save" onclick="saveTheme()">Save</div>
   </div>
+</div>
 
-  <div id="google_translate_element"></div>
-  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
-    }
-  </script>
+<!-- HEADER -->
+<div class="header">
+  <img src="/logo-main.png" alt="Ro&Bot™">
+  <span>SamanthAI Chat</span>
+</div>
 
-  <footer>
-    &copy; 2025 Ro&Bot Royal Botics. All Rights Reserved.
-  </footer>
+<!-- CHAT BOX -->
+<div class="chat-box">
+  <div class="chat-container" id="chatContainer">
+    <div class="message bot">Hello! I’m SamanthAI, your intelligent home assistant. How can I help you today?</div>
+  </div>
+  <div class="chat-input">
+    <input type="text" id="userInput" placeholder="Type a message..." onkeydown="if(event.key==='Enter'){sendMessage()}">
+    <button onclick="sendMessage()">Send</button>
+  </div>
+</div>
 
-  <button class="chat-now-btn">Chat Now</button>
+<footer>© 2025 Ro&Bot™. All rights reserved.</footer>
 
-  <script>
-    lucide.createIcons();
+<script>
+let chosenTheme = null;
+const GAS_URL = "https://script.google.com/macros/s/AKfycbwHZ9-LdqX_-fFmzvUlNbKfqyhMKnOvTln68vfastiUYKAdwQORBBQQlyicO6lY-dD9/exec";
+let chatHistory = [];
 
-   document.querySelector('.chat-now-btn').addEventListener('click', function () {
-  window.location.href = 'chat.html'; // Change to your actual chat page URL
-});
+function selectTheme(theme){
+  chosenTheme = theme;
+  document.querySelectorAll('.theme-half').forEach(el => el.classList.remove('selected'));
+  document.querySelector(`.theme-half.${theme}`).classList.add('selected');
+}
 
-  </script>
+function saveTheme(){
+  if(!chosenTheme) return;
+  if(chosenTheme==='light'){ document.body.classList.add('light'); }
+  else { document.body.classList.remove('light'); }
+  localStorage.setItem('theme', chosenTheme);
+
+  const modal = document.getElementById('themeModal');
+  const box = document.getElementById('themeBox');
+  box.classList.add('hide');
+  modal.classList.add('hide');
+  setTimeout(()=>{ modal.style.display='none'; },500);
+}
+
+window.onload = () => {
+  const savedTheme = localStorage.getItem('theme');
+  if(savedTheme){
+    if(savedTheme==='light'){ document.body.classList.add('light'); }
+    document.getElementById('themeModal').style.display='none';
+  }
+};
+
+// CHAT FUNCTIONS
+async function sendMessage(){
+  const input = document.getElementById("userInput");
+  const text = input.value.trim();
+  if(!text) return;
+  addMessage(text,'user');
+  input.value='';
+  chatHistory.push({role:'user', content:text});
+
+  try{
+    const res = await fetch(GAS_URL,{
+      method:'POST',
+      body:JSON.stringify({messages: chatHistory})
+    });
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content || "Sorry, I couldn't respond.";
+    chatHistory.push({role:'assistant', content:reply});
+    addMessage(reply,'bot');
+  }catch(e){
+    addMessage("Error: "+e.message,'bot');
+  }
+}
+
+function addMessage(text,sender){
+  const container = document.getElementById("chatContainer");
+  const msg = document.createElement("div");
+  msg.className = "message "+sender;
+  msg.textContent = text;
+  container.appendChild(msg);
+  container.scrollTop = container.scrollHeight;
+}
+</script>
+
 </body>
 </html>
