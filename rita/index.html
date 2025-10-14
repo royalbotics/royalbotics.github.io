@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>In Memory of Rita</title>
+<style>
+  :root {
+    --bg-color: #111;
+    --text-color: #fff;
+    --accent: #f15e5e;
+    --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-sans);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Candle flicker background */
+  .candle {
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 80px;
+    background: #333;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(255,200,100,0.1);
+  }
+
+  .flame {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 30px;
+    background: radial-gradient(circle at 50% 50%, #fff7b2, #ffae42, transparent);
+    border-radius: 50% 50% 50% 50%;
+    filter: blur(2px);
+    animation: flicker 0.15s infinite alternate;
+  }
+
+  @keyframes flicker {
+    0% { transform: translateX(-50%) scale(1) rotate(0deg); opacity: 0.8; }
+    50% { transform: translateX(-50%) scale(1.1) rotate(2deg); opacity: 1; }
+    100% { transform: translateX(-50%) scale(0.95) rotate(-2deg); opacity: 0.85; }
+  }
+
+  .memorial-container {
+    z-index: 10;
+    max-width: 600px;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.3rem;
+    margin: 0 0 15px;
+  }
+
+  .memorial-heart {
+    font-size: 4rem;
+    color: var(--accent);
+    display: inline-block;
+    cursor: pointer;
+    animation: pulse 2s ease-in-out infinite;
+    transform-origin: center;
+    transition: transform 0.2s ease;
+  }
+
+  @keyframes pulse {
+    0%,100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+
+  .date {
+    margin-top: 10px;
+    font-size: 1rem;
+    color: #ccc;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .memorial-heart { animation: none; }
+    .flame { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="candle">
+  <div class="flame"></div>
+</div>
+
+<div class="memorial-container">
+  <h1>Forever in our hearts</h1>
+  <p><strong>Rita 🐾</strong> — our beloved companion</p>
+  <div class="memorial-heart" id="heart">❤</div>
+  <div class="date">Passed away: 15:00 CEST August 13, 2025</div>
+</div>
+
+<script>
+  const heart = document.getElementById('heart');
+
+  // Heart interaction: grows slightly on hover/click
+  heart.addEventListener('mouseenter', () => heart.style.transform = 'scale(1.4)');
+  heart.addEventListener('mouseleave', () => heart.style.transform = 'scale(1.0)');
+  heart.addEventListener('click', () => {
+    heart.style.transform = 'scale(1.6)';
+    setTimeout(() => heart.style.transform = 'scale(1.0)', 300);
+  });
+</script>
+
+</body>
+</html>
