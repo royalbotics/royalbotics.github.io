@@ -215,7 +215,7 @@ footer::before {
   <img src="/logo-main.png" alt="Ro&Bot™">
   <span>Ro&Bot™</span>
 </div>
-<!-- BEGIN: Left-side memorial stripe -->
+<!-- BEGIN: Left-side memorial stripe with pulsing heart -->
 <style>
   /* The vertical black stripe */
   .memorial-stripe {
@@ -267,6 +267,7 @@ footer::before {
     width: 90%;
     box-shadow: 0 12px 40px rgba(0,0,0,0.4);
     font-family: system-ui, sans-serif;
+    position: relative;
   }
 
   .memorial-card h2 {
@@ -280,10 +281,18 @@ footer::before {
     color: #333;
   }
 
+  /* The pulsing heart */
   .memorial-heart {
     color: #b61b1b;
     font-size: 2rem;
     margin-top: 12px;
+    animation: pulse 2s ease-in-out infinite;
+    transform-origin: center;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.15); opacity: 1; }
   }
 
   .memorial-close {
@@ -342,7 +351,7 @@ footer::before {
     }
   });
 </script>
-<!-- END: Left-side memorial stripe -->
+<!-- END: Left-side memorial stripe with pulsing heart -->
 
   
 <!-- MENU -->
