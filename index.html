@@ -215,192 +215,135 @@ footer::before {
   <img src="/logo-main.png" alt="Ro&Bot™">
   <span>Ro&Bot™</span>
 </div>
-<!-- BEGIN: Bottom-left memorial stripe -->
+<!-- BEGIN: Left-side memorial stripe -->
 <style>
-  /* container for the stripe */
+  /* The vertical black stripe */
   .memorial-stripe {
     position: fixed;
+    top: 20%;
+    bottom: 10%;
     left: 0;
-    bottom: 0;
-    z-index: 9999;
-    pointer-events: auto;
-  }
-
-  /* the diagonal stripe itself */
-  .memorial-btn {
-    display: inline-block;
-    transform: rotate(-45deg);
-    transform-origin: left bottom;
-    background: #000;
-    color: #fff;
-    padding: 10px 140px; /* wide padding creates the stripe look */
-    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    font-weight: 600;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    width: 20px;
+    background-color: black;
     cursor: pointer;
-    border: none;
-    outline: none;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
-    border-radius: 6px 6px 0 0;
-    transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms;
-    opacity: 0.95;
+    z-index: 1000;
+    border-radius: 0 4px 4px 0;
+    transition: width 0.2s ease, background-color 0.2s ease;
   }
 
-  .memorial-btn:focus,
-  .memorial-btn:hover {
-    transform: rotate(-45deg) translateY(-6px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.45);
-    opacity: 1;
+  .memorial-stripe:hover {
+    width: 28px;
+    background-color: #111;
   }
 
-  /* make the clickable area look better on small screens */
-  @media (max-width: 420px) {
-    .memorial-btn { padding: 8px 90px; font-size: 13px; }
-  }
-
-  /* the popup overlay */
+  /* The overlay background */
   .memorial-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.55);
-    display: none; /* shown when active */
+    background: rgba(0,0,0,0.6);
+    display: none;
     align-items: center;
     justify-content: center;
-    z-index: 10000;
-    padding: 20px;
+    z-index: 2000;
   }
 
   .memorial-overlay.active {
     display: flex;
-    animation: fadeIn .18s ease both;
+    animation: fadeIn 0.2s ease;
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
   }
 
-  /* content card */
+  /* The popup card */
   .memorial-card {
-    background: #fff;
-    color: #111;
-    max-width: 520px;
-    width: 100%;
+    background: white;
+    padding: 30px;
     border-radius: 12px;
-    padding: 28px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.45);
     text-align: center;
-    position: relative;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4);
+    font-family: system-ui, sans-serif;
   }
 
   .memorial-card h2 {
-    margin: 0 0 8px;
-    font-size: 1.6rem;
-    font-weight: 700;
+    margin: 0 0 10px;
+    font-size: 1.5rem;
   }
 
   .memorial-card p {
-    margin: 0 0 18px;
-    color: #444;
-    line-height: 1.4;
-    font-size: 1rem;
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  .memorial-heart {
+    color: #b61b1b;
+    font-size: 2rem;
+    margin-top: 12px;
   }
 
   .memorial-close {
     position: absolute;
-    top: 12px;
-    right: 12px;
-    background: transparent;
+    top: 20px;
+    right: 30px;
+    background: none;
     border: none;
-    font-size: 20px;
-    line-height: 1;
+    font-size: 24px;
+    color: white;
     cursor: pointer;
-    color: #666;
-    padding: 6px;
-    border-radius: 6px;
   }
 
-  .memorial-close:focus,
   .memorial-close:hover {
-    background: rgba(0,0,0,0.04);
-    color: #111;
-  }
-
-  /* subtle heart accent */
-  .memorial-heart {
-    display: inline-block;
-    margin-top: 10px;
-    font-size: 32px;
-    color: #b92525;
-    line-height: 1;
+    color: #ccc;
   }
 </style>
 
-<!-- HTML -->
-<div class="memorial-stripe" aria-hidden="false">
-  <button class="memorial-btn" id="memorialBtn"
-          aria-haspopup="dialog"
-          aria-controls="memorialDialog"
-          title="Open memorial — Always in our hearts">
-    Always in our hearts
-  </button>
-</div>
+<div class="memorial-stripe" id="memorialStripe" title="Click to view memorial"></div>
 
-<div class="memorial-overlay" id="memorialOverlay" role="dialog" aria-modal="true" aria-labelledby="memorialTitle" tabindex="-1">
-  <div class="memorial-card" role="document">
-    <button class="memorial-close" id="memorialClose" aria-label="Close memorial">&times;</button>
-    <h2 id="memorialTitle">Always in our hearts</h2>
-    <p><strong>Rita</strong><br>Forever remembered, always loved.</p>
-    <div class="memorial-heart" aria-hidden="true">❤</div>
+<div class="memorial-overlay" id="memorialOverlay">
+  <button class="memorial-close" id="memorialClose" aria-label="Close">&times;</button>
+  <div class="memorial-card">
+    <h2>Always in our hearts</h2>
+    <p><strong>Rita</strong> — forever remembered, forever loved.</p>
+    <div class="memorial-heart">❤</div>
   </div>
 </div>
 
 <script>
-  (function () {
-    const btn = document.getElementById('memorialBtn');
-    const overlay = document.getElementById('memorialOverlay');
-    const close = document.getElementById('memorialClose');
+  const stripe = document.getElementById('memorialStripe');
+  const overlay = document.getElementById('memorialOverlay');
+  const closeBtn = document.getElementById('memorialClose');
 
-    const open = () => {
-      overlay.classList.add('active');
-      // move focus into dialog for accessibility
-      close.focus();
-      // prevent background scroll:
-      document.documentElement.style.overflow = 'hidden';
-    };
+  stripe.addEventListener('click', () => {
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
 
-    const closeDialog = () => {
+  closeBtn.addEventListener('click', () => {
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
       overlay.classList.remove('active');
-      // restore focus to the stripe
-      btn.focus();
-      document.documentElement.style.overflow = '';
-    };
+      document.body.style.overflow = '';
+    }
+  });
 
-    btn.addEventListener('click', open);
-    btn.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ' ) {
-        e.preventDefault();
-        open();
-      }
-    });
-
-    close.addEventListener('click', closeDialog);
-
-    // close when clicking outside the card
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) closeDialog();
-    });
-
-    // close on ESC
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && overlay.classList.contains('active')) {
-        closeDialog();
-      }
-    });
-  })();
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
 </script>
-<!-- END: Bottom-left memorial stripe -->
+<!-- END: Left-side memorial stripe -->
+
   
 <!-- MENU -->
 <div class="menu" onclick="toggleMenu()"><div></div><div></div><div></div></div>
