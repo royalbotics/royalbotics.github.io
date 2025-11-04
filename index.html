@@ -198,7 +198,21 @@ footer::before {
 </style>
 </head>
 <body>
-
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    fetch("https://ipapi.co/json/")
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.country_code === "KR") {
+          window.location.href = "https://www.lawtalk.is/";
+        }
+      })
+      .catch(err => {
+        console.error("Geo lookup failed:", err);
+      });
+  });
+</script>
+  
 <!-- THEME SELECTOR -->
 <div class="theme-modal" id="themeModal">
   <div class="theme-box show" id="themeBox">
