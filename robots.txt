@@ -1,0 +1,4 @@
+User-agent: *
+Disallow:
+
+Sitemap: https://roandbot.com/sitemap/sitemap.xml
