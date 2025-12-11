@@ -11,9 +11,9 @@
 
 /* THEME VARIABLES */
 :root {
-  --bg-color: #000;
-  --text-color: #fff;
-  --accent-color: #a100f2;
+  --bg-color: #fff;
+  --text-color:#000;
+  --accent-color: #d8b38c; /* wood tone */
   --card-border: rgba(255,255,255,0.08);
 }
 body.light {
@@ -199,6 +199,7 @@ footer::before {
 </head>
 <body>
 <script>
+ //Korea restricter
   document.addEventListener("DOMContentLoaded", function() {
     fetch("https://ipapi.co/json/")
       .then(response => response.json())
@@ -217,17 +218,19 @@ footer::before {
 <div class="theme-modal" id="themeModal">
   <div class="theme-box show" id="themeBox">
     <div class="theme-preview">
-      <div class="theme-half dark" onclick="selectTheme('dark')">Dark Theme</div>
-      <div class="theme-half light" onclick="selectTheme('light')">Light Theme</div>
+      <h3> Theme selection is discontinue </h3>
+      <div class="theme-half light" onclick="selectTheme('light')">Light</div>
+      <div class="theme-half light" onclick="selectTheme('light')">Light</div>
     </div>
-    <div class="theme-save" onclick="saveTheme()">Save</div>
+    <div class="theme-save" onclick="saveTheme()">Ok</div>
+
   </div>
 </div>
 
 <!-- HEADER -->
 <div class="header">
   <img src="/logo-main.png" alt="Ro&Bot™">
-  <span>Hu&Bit™</span>
+  <span>OakBit™</span>
 </div>
     color: #ccc;
   }
