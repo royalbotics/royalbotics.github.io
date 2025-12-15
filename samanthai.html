@@ -2,7 +2,7 @@
 <html lang="en">
  <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SamanthAI Demo | AI assistant by Ro&Bot™</title>
+    <title>SamanthAI Demo | AI assistant by OakBit™</title>
     <link rel="icon" href="https://i.ibb.co/Jw6dV46h/favicon.png" type="image/png">
 
     <!-- SEO Meta Tags -->
@@ -25,9 +25,11 @@
     <meta name="twitter:description" content="Experience cutting-edge AI conversation with SamanthAI.">
     <meta name="twitter:image" content="https://i.ibb.co/jk0WvFWd/image-4.jpg">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-/* THEME VARIABLES */
+/* ===============================
+   THEME VARIABLES
+================================ */
 :root {
   --bg-color: #000;
   --text-color: #fff;
@@ -41,112 +43,306 @@ body.light {
   --card-border: rgba(0,0,0,0.1);
 }
 
-/* GLOBAL */
+/* ===============================
+   GLOBAL
+================================ */
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
-  margin:0; padding:0;
+  margin:0;
+  padding:0;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
   font-family:'Poppins', sans-serif;
   background:var(--bg-color);
   color:var(--text-color);
-  display:flex; flex-direction:column; height:100vh;
-  transition: background 0.5s ease, color 0.5s ease;
+  letter-spacing:-0.2px;
+  transition: background 0.6s ease, color 0.6s ease;
 }
 
-/* HEADER */
+/* ===============================
+   HEADER (Apple Glass)
+================================ */
 .header {
   height:60px;
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  font-weight:600; font-size:1.2rem;
-  border-bottom:1px solid var(--card-border);
-  position:sticky; top:0; z-index:100;
-  background:rgba(0,0,0,0.7);
-  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  font-weight:600;
+  font-size:1.2rem;
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:rgba(0,0,0,0.55);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.08),
+    0 10px 30px rgba(0,0,0,0.25);
 }
-body.light .header { background:rgba(255,255,255,0.7); }
-.header img { height:32px; }
 
-/* CHAT BOX */
+body.light .header {
+  background:rgba(255,255,255,0.65);
+  box-shadow:
+    0 1px 0 rgba(0,0,0,0.05),
+    0 10px 30px rgba(0,0,0,0.12);
+}
+
+.header img {
+  height:32px;
+}
+
+/* ===============================
+   CHAT BOX (Floating Card)
+================================ */
 .chat-box {
-  flex:1; display:flex; flex-direction:column;
-  width:100%; max-width:720px; margin:20px auto;
-  border:1px solid var(--card-border); border-radius:16px;
-  overflow:hidden; background:var(--bg-color);
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  max-width:720px;
+  margin:20px auto;
+  border-radius:24px;
+  border:none;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.04),
+    rgba(255,255,255,0.01)
+  );
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+  overflow:hidden;
 }
+
+body.light .chat-box {
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.9),
+    rgba(255,255,255,255)
+  );
+  box-shadow:
+    0 25px 60px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+}
+
+/* ===============================
+   CHAT CONTAINER
+================================ */
 .chat-container {
-  flex:1; overflow-y:auto; padding:20px;
-  display:flex; flex-direction:column; gap:12px;
+  flex:1;
+  overflow-y:auto;
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
 }
+
+/* ===============================
+   MESSAGES (iMessage feel)
+================================ */
 .message {
-  max-width:75%; padding:12px 16px;
-  border-radius:16px; font-size:0.95rem; line-height:1.4;
+  max-width:75%;
+  padding:14px 18px;
+  border-radius:20px;
+  font-size:0.95rem;
+  line-height:1.45;
   word-wrap:break-word;
+  animation: fadeIn 0.3s ease;
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.15);
 }
-.user { align-self:flex-end; background:var(--accent-color); color:#fff; border-bottom-right-radius:4px; }
-.bot { align-self:flex-start; background:rgba(255,255,255,0.05); border-bottom-left-radius:4px; }
-body.light .bot { background:rgba(0,0,0,0.05); }
 
-/* INPUT */
+@keyframes fadeIn {
+  from { opacity:0; transform:translateY(4px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.user {
+  align-self:flex-end;
+  background:var(--accent-color);
+  color:#fff;
+  border-bottom-right-radius:6px;
+  box-shadow:
+    0 6px 18px rgba(161,0,242,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.bot {
+  align-self:flex-start;
+  background:rgba(255,255,255,0.06);
+  border-bottom-left-radius:6px;
+  backdrop-filter: blur(10px);
+}
+
+body.light .bot {
+  background:rgba(0,0,0,0.06);
+}
+
+/* ===============================
+   INPUT BAR (iOS Style)
+================================ */
 .chat-input {
-  display:flex; padding:12px; border-top:1px solid var(--card-border); background:var(--bg-color);
+  display:flex;
+  padding:14px;
+  gap:10px;
+  background:rgba(0,0,0,0.45);
+  backdrop-filter: blur(18px);
+  border-top:1px solid var(--card-border);
 }
-.chat-input input {
-  flex:1; padding:12px 16px; border:none; border-radius:20px;
-  font-size:0.95rem; outline:none; background:rgba(255,255,255,0.05); color:var(--text-color);
-}
-body.light .chat-input input { background:rgba(0,0,0,0.05); }
-.chat-input button {
-  margin-left:10px; padding:12px 18px; border:none;
-  border-radius:20px; background:var(--accent-color); color:#fff;
-  cursor:pointer; font-weight:600; transition:0.3s;
-}
-.chat-input button:hover { opacity:0.85; }
 
-/* THEME MODAL */
+body.light .chat-input {
+  background:rgba(255,255,255,0.75);
+}
+
+.chat-input input {
+  flex:1;
+  padding:14px 18px;
+  border:none;
+  border-radius:999px;
+  font-size:0.95rem;
+  outline:none;
+  background:rgba(255,255,255,0.08);
+  color:var(--text-color);
+  box-shadow:
+    inset 0 1px 2px rgba(0,0,0,0.2),
+    0 1px 0 rgba(255,255,255,0.1);
+}
+
+body.light .chat-input input {
+  background:rgba(0,0,0,0.05);
+}
+
+.chat-input button {
+  padding:14px 22px;
+  border:none;
+  border-radius:999px;
+  background:var(--accent-color);
+  color:#fff;
+  cursor:pointer;
+  font-weight:600;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  box-shadow:
+    0 6px 18px rgba(161,0,242,0.45);
+}
+
+.chat-input button:hover {
+  transform: translateY(-1px);
+  opacity:0.9;
+}
+
+.chat-input button:active {
+  transform: translateY(0);
+}
+
+/* ===============================
+   THEME MODAL (Apple Sheet)
+================================ */
 .theme-modal {
-  position:fixed; top:0; left:0; right:0; bottom:0;
+  position:fixed;
+  inset:0;
   background:url('/screenshot.png') center/cover no-repeat;
-  display:flex; align-items:center; justify-content:center; z-index:2000;
-  opacity:1; transition: opacity 0.5s ease;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:2000;
 }
+
 .theme-modal::before {
-  content:''; position:absolute; inset:0;
-  background: rgba(0,0,0,0.6); z-index:1;
+  content:'';
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,0.6);
 }
-.theme-modal.hide { opacity:0; pointer-events:none; }
 
 .theme-box {
-  position:relative; z-index:10;
-  display:flex; flex-direction:column; background:var(--bg-color);
-  color:var(--text-color); border-radius:20px; overflow:hidden;
-  width:600px; max-width:90%; border:1px solid var(--card-border);
-  transform:scale(1); transition:transform 0.5s ease, background 0.5s ease, color 0.5s ease;
+  position:relative;
+  z-index:10;
+  width:600px;
+  max-width:90%;
+  border-radius:28px;
+  overflow:hidden;
+  background:var(--bg-color);
+  color:var(--text-color);
+  box-shadow:
+    0 40px 100px rgba(0,0,0,0.6);
+  animation: sheetUp 0.45s ease;
 }
-.theme-box.show { transform:scale(1); }
-.theme-box.hide { transform:scale(0.9); }
+
+@keyframes sheetUp {
+  from { transform:translateY(40px) scale(0.95); opacity:0; }
+  to { transform:none; opacity:1; }
+}
 
 .theme-preview {
-  display:flex; height:220px;
+  display:flex;
+  height:220px;
 }
+
 .theme-half {
-  flex:1; display:flex; align-items:center; justify-content:center;
-  font-weight:600; font-size:1.2rem; cursor:pointer; transition:0.3s, transform 0.3s;
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:600;
+  font-size:1.2rem;
+  cursor:pointer;
+  transition: transform 0.3s ease;
 }
-.theme-half:hover { transform:scale(1.05); }
-.theme-half.dark { background:#000; color:#fff; }
-.theme-half.light { background:#fff; color:#000; position:relative; }
-.theme-half.light::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,#fff 70%,#d8b38c 100%); z-index:-1; }
-.theme-half.selected { outline:4px solid #a100f2; }
 
-/* Save button */
+.theme-half:hover {
+  transform: scale(1.04);
+}
+
+.theme-half.dark {
+  background:#000;
+  color:#fff;
+}
+
+.theme-half.light {
+  background:linear-gradient(135deg,#fff 70%,#d8b38c 100%);
+  color:#000;
+}
+
+.theme-half.selected {
+  outline:4px solid var(--accent-color);
+}
+
+/* ===============================
+   SAVE BUTTON
+================================ */
 .theme-save {
-  background:var(--accent-color); color:#fff;
-  padding:16px; text-align:center; cursor:pointer; font-weight:600; transition:0.3s;
+  background:var(--accent-color);
+  color:#fff;
+  padding:18px;
+  text-align:center;
+  font-weight:600;
+  cursor:pointer;
+  transition: opacity 0.2s ease;
 }
-.theme-save:hover { opacity:0.85; }
 
-/* FOOTER */
-footer {
-  text-align:center; padding:16px 0; font-size:0.85rem; border-top:1px solid var(--card-border);
+.theme-save:hover {
+  opacity:0.9;
 }
+
+/* ===============================
+   FOOTER
+================================ */
+footer {
+  text-align:center;
+  padding:16px 0;
+  font-size:0.85rem;
+  border-top:1px solid var(--card-border);
+  opacity:0.75;
+ }
+ 
 </style>
 </head>
 <body>
